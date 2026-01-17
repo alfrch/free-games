@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GameResponse: Decodable {
+struct GameResponse: nonisolated Decodable {
   let id: Int?
   let title: String?
   let worth: String?
