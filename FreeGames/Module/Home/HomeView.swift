@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+  @EnvironmentObject var presenter: HomePresenter
   
   var body: some View {
     ScrollView {
