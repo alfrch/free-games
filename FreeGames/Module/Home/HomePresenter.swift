@@ -5,7 +5,7 @@
 //  Created by Alif Rachmawan on 17/01/26.
 //
 
-import Foundation
+import SwiftUI
 import Combine
 
 @MainActor
@@ -16,6 +16,7 @@ class HomePresenter: ObservableObject {
   @Published var errorMessage: String?
   @Published var isLoading = false
   
+  private let router = HomeRouter()
   private let useCase: HomeUseCase
   
   init(useCase: HomeUseCase) {
@@ -47,5 +48,13 @@ class HomePresenter: ObservableObject {
   
   func isFavorite(_ gameId: Int) -> Bool {
     favoriteIds.contains(gameId)
+  }
+  
+  func linkBuilder<Content: View>(
+    for game: GameModel,
+    @ViewBuilder content: () -> Content
+  ) -> some View {
+    NavigationLink(
+      destination: router.makeDetailView(for: game)) { content() }
   }
 }
