@@ -10,8 +10,7 @@ import CachedAsyncImage
 
 struct GameCard: View {
   let game: GameModel
-  
-  @State private var isFavorite = false
+  let isFavorite: Bool
   let onFavoriteToggle: () -> Void
   
   var body: some View {
@@ -83,5 +82,5 @@ struct GameCard: View {
     platforms: ["PC", "Playstation 4", "Xbox One", "Nintendo Switch", "Android", "iOS"],
     url: "https://www.gamerpower.com/dumb-ways-to-die-mobile-giveaway"
   )
-  GameCard(game: game, onFavoriteToggle: {})
+  GameCard(game: game, isFavorite: false, onFavoriteToggle: {})
 }

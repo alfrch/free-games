@@ -10,7 +10,10 @@ import Foundation
 final class Injection {
   
   private func provideRepository() -> GameRepositoryProtocol {
-    return GameRepository(remote: RemoteDataSource.shared)
+    return GameRepository(
+      remote: RemoteDataSource.shared,
+      local: LocalDataSource.shared
+    )
   }
   
   func provideHome() -> HomeUseCase {

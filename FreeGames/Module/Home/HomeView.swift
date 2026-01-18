@@ -19,7 +19,13 @@ struct HomeView: View {
           ProgressView()
         } else {
           ForEach(presenter.games) { game in
-            GameCard(game: game) {}
+            GameCard(
+              game: game,
+              isFavorite: presenter.isFavorite(game.id),
+              onFavoriteToggle: {
+                presenter.toggleFavorite(for: game.id)
+              }
+            )
           }
         }
       }

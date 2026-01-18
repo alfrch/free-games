@@ -9,19 +9,22 @@ import Foundation
 
 protocol GameRepositoryProtocol {
   func getGames() async throws -> [GameModel]
+  func getFavoriteIds() -> Set<Int>
+  func updateFavorite(id: Int)
 }
 
 final class GameRepository: GameRepositoryProtocol {
   
-  private let remote: RemoteDataSource
+  private let remote: RemoteDataSourceProtocol
+  private let local: LocalDataSourceProtocol
   
-  init(remote: RemoteDataSource) {
+  init(
+    remote: RemoteDataSourceProtocol,
+    local: LocalDataSourceProtocol
+  ) {
     self.remote = remote
+    self.local = local
   }
-  
-  static let shared: GameRepository = {
-    return GameRepository(remote: RemoteDataSource.shared)
-  }()
   
   func getGames() async throws -> [GameModel] {
     do {
@@ -30,5 +33,13 @@ final class GameRepository: GameRepositoryProtocol {
     } catch {
       throw error
     }
+  }
+  
+  func getFavoriteIds() -> Set<Int> {
+    return local.getFavoritedIds()
+  }
+  
+  func updateFavorite(id: Int) {
+    local.toggleFavorite(id: id)
   }
 }

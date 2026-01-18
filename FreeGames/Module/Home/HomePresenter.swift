@@ -12,6 +12,7 @@ import Combine
 class HomePresenter: ObservableObject {
   
   @Published var games: [GameModel] = []
+  @Published var favoriteIds: Set<Int> = []
   @Published var errorMessage: String?
   @Published var isLoading = false
   
@@ -25,10 +26,26 @@ class HomePresenter: ObservableObject {
     isLoading = true
     defer { isLoading = false }
     
+    self.favoriteIds = useCase.getFavoriteIds()
+    
     do {
       self.games = try await useCase.getGames()
     } catch {
       self.errorMessage = error.localizedDescription
     }
+  }
+  
+  func toggleFavorite(for gameId: Int) {
+    useCase.updateFavoriteId(id: gameId)
+    
+    if favoriteIds.contains(gameId) {
+      favoriteIds.remove(gameId)
+    } else {
+      favoriteIds.insert(gameId)
+    }
+  }
+  
+  func isFavorite(_ gameId: Int) -> Bool {
+    favoriteIds.contains(gameId)
   }
 }
