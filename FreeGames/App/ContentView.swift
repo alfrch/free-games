@@ -20,6 +20,11 @@ struct ContentView: View {
           .tabItem {
             Label("Favorite", systemImage: "heart.fill")
           }
+        
+        AboutView()
+          .tabItem {
+            Label("About", systemImage: "person.fill")
+          }
       }
     }
   }
