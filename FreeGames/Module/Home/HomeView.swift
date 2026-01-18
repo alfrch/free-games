@@ -13,20 +13,35 @@ struct HomeView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .center, spacing: 16) {
-        // Header
-        VStack(alignment: .leading, spacing: 4) {
-          Text("Free Games")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-          
-          Text("Discover amazing free games to play")
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
+        headerView
+        
+        if presenter.isLoading {
+          ProgressView()
+        } else {
+          ForEach(presenter.games) { game in
+            GameCard(game: game) {}
+          }
         }
-        .padding(.horizontal)
-        .padding(.top, 8)
       }
+      .padding(.bottom, 16)
     }
+    .task {
+      await presenter.getGames()
+    }
+  }
+  
+  private var headerView: some View {
+    VStack(alignment: .leading, spacing: 4) {
+      Text("Free Games")
+        .font(.largeTitle)
+        .fontWeight(.bold)
+      
+      Text("Discover amazing free games to play")
+        .font(.subheadline)
+        .foregroundStyle(.secondary)
+    }
+    .padding(.horizontal)
+    .padding(.top, 8)
   }
 }
 
