@@ -14,22 +14,10 @@ struct HomeView: View {
     ScrollView {
       VStack(alignment: .center, spacing: 16) {
         headerView
-        
         if presenter.isLoading {
           ProgressView()
         } else {
-          ForEach(presenter.games) { game in
-            self.presenter.linkBuilder(for: game) {
-              GameCard(
-                game: game,
-                isFavorite: presenter.isFavorite(game.id),
-                onFavoriteToggle: {
-                  presenter.toggleFavorite(for: game.id)
-                }
-              )
-            }
-            .buttonStyle(.plain)
-          }
+          gameList
         }
       }
       .padding(.bottom, 16)
@@ -39,18 +27,26 @@ struct HomeView: View {
     }
   }
   
-  private var headerView: some View {
-    VStack(alignment: .leading, spacing: 4) {
-      Text("Free Games")
-        .font(.largeTitle)
-        .fontWeight(.bold)
-      
-      Text("Discover amazing free games to play")
-        .font(.subheadline)
-        .foregroundStyle(.secondary)
+  var headerView: some View {
+    HeaderView(
+      title: "Free Games",
+      subtitle: "Discover amazing free games to play"
+    )
+  }
+  
+  var gameList: some View {
+    ForEach(presenter.games) { game in
+      self.presenter.linkBuilder(for: game) {
+        GameCard(
+          game: game,
+          isFavorite: presenter.isFavorite(game.id),
+          onFavoriteToggle: {
+            presenter.toggleFavorite(for: game.id)
+          }
+        )
+      }
+      .buttonStyle(.plain)
     }
-    .padding(.horizontal)
-    .padding(.top, 8)
   }
 }
 

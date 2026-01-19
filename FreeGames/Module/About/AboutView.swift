@@ -13,6 +13,7 @@ struct AboutView: View {
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 24) {
+        HeaderView(title: "About")
         profileView
         featuresView
       }

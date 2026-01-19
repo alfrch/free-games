@@ -12,28 +12,42 @@ struct FavoriteView: View {
   
   var body: some View {
     ScrollView {
-      if presenter.isLoading {
-        ProgressView()
-      } else if presenter.games.isEmpty {
-        emptyView
-      } else {
-        ForEach(presenter.games) { game in
-          self.presenter.linkBuilder(for: game) {
-            GameCard(
-              game: game,
-              isFavorite: presenter.isFavorite(game.id),
-              onFavoriteToggle: {
-                presenter.toggleFavorite(for: game.id)
-              }
-            )
-          }
-          .buttonStyle(.plain)
+      VStack(alignment: .center, spacing: 16) {
+        headerView
+        if presenter.isLoading {
+          ProgressView()
+        } else if presenter.games.isEmpty {
+          emptyView
+        } else {
+          gameList
         }
       }
     }
     .padding(.bottom, 16)
     .task {
       await presenter.getGames()
+    }
+  }
+  
+  var headerView: some View {
+    HeaderView(
+      title: "Favorites",
+      subtitle: "Your favorite game collection"
+    )
+  }
+  
+  var gameList: some View {
+    ForEach(presenter.games) { game in
+      self.presenter.linkBuilder(for: game) {
+        GameCard(
+          game: game,
+          isFavorite: presenter.isFavorite(game.id),
+          onFavoriteToggle: {
+            presenter.toggleFavorite(for: game.id)
+          }
+        )
+      }
+      .buttonStyle(.plain)
     }
   }
   
