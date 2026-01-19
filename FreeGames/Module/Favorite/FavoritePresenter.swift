@@ -16,6 +16,7 @@ final class FavoritePresenter: ObservableObject {
   @Published var errorMessage: String?
   @Published var isLoading = false
   
+  private let router = HomeRouter()
   private let useCase: HomeUseCase
   
   init(useCase: HomeUseCase) {
@@ -49,5 +50,15 @@ final class FavoritePresenter: ObservableObject {
   
   func isFavorite(_ gameId: Int) -> Bool {
     favoriteIds.contains(gameId)
+  }
+  
+  func linkBuilder<Content: View>(
+    for game: GameModel,
+    @ViewBuilder content: () -> Content
+  ) -> some View {
+    NavigationLink(
+      destination: router.makeDetailView(for: game)) {
+        content()
+      }
   }
 }

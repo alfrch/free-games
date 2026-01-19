@@ -18,13 +18,16 @@ struct FavoriteView: View {
         emptyView
       } else {
         ForEach(presenter.games) { game in
-          GameCard(
-            game: game,
-            isFavorite: presenter.isFavorite(game.id),
-            onFavoriteToggle: {
-              presenter.toggleFavorite(for: game.id)
-            }
-          )
+          self.presenter.linkBuilder(for: game) {
+            GameCard(
+              game: game,
+              isFavorite: presenter.isFavorite(game.id),
+              onFavoriteToggle: {
+                presenter.toggleFavorite(for: game.id)
+              }
+            )
+          }
+          .buttonStyle(.plain)
         }
       }
     }
