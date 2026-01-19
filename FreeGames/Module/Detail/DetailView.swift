@@ -10,6 +10,7 @@ import CachedAsyncImage
 
 struct DetailView: View {
   @StateObject var presenter: DetailPresenter
+  @State private var showSafari = false
   
   var body: some View {
     ScrollView(.vertical) {
@@ -46,7 +47,7 @@ struct DetailView: View {
           }
           
           Button {
-            // TODO: Open web
+            showSafari = true
           } label: {
             Text("Get Game")
               .font(.headline)
@@ -76,6 +77,12 @@ struct DetailView: View {
       } label: {
         Image(systemName: presenter.isFavorite ? "heart.fill" : "heart")
           .foregroundStyle(.red)
+      }
+    }
+    .sheet(isPresented: $showSafari) {
+      if let url = URL(string: presenter.game.url) {
+        SafariView(url: url)
+          .ignoresSafeArea()
       }
     }
   }
