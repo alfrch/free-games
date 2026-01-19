@@ -66,11 +66,12 @@ struct DetailView: View {
             .foregroundStyle(.secondary)
             .lineSpacing(4)
         }
-        .padding(.horizontal, 16)
+        .padding([.horizontal, .bottom], 16)
       }
     }
     .navigationTitle("Detail")
     .navigationBarTitleDisplayMode(.inline)
+    .toolbar(.hidden, for: .tabBar)
     .toolbar {
       Button {
         presenter.toggleFavorite()
