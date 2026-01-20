@@ -43,11 +43,11 @@ struct DetailView: View {
       image
         .resizable()
         .aspectRatio(contentMode: .fill)
-        .frame(maxWidth: UIScreen.main.bounds.width)
+        .frame(minWidth: 0, maxWidth: .infinity)
     } placeholder: {
       ProgressView()
     }
-    .frame(height: 300)
+    .frame(height: 250)
     .clipped()
   }
   

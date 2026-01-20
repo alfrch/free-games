@@ -23,9 +23,8 @@ struct HeaderView: View {
           .foregroundStyle(.secondary)
       }
     }
-    .padding(.horizontal)
-    .padding(.top, 8)
     .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(.top, 8)
   }
 }
 

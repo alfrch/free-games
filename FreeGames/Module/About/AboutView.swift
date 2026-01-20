@@ -17,6 +17,8 @@ struct AboutView: View {
         profileView
         featuresView
       }
+      .frame(maxWidth: .infinity, alignment: .center)
+      .padding(.horizontal, 16)
     }
   }
   
@@ -49,7 +51,6 @@ struct AboutView: View {
       )
     )
     .cornerRadius(20)
-    .padding(.horizontal, 16)
   }
   
   var featuresView: some View {
@@ -67,7 +68,6 @@ struct AboutView: View {
     .background(Color(.systemBackground))
     .cornerRadius(16)
     .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
-    .padding(.horizontal)
   }
 }
 

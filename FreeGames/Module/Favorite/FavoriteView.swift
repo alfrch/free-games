@@ -22,8 +22,9 @@ struct FavoriteView: View {
           gameList
         }
       }
+      .frame(maxWidth: .infinity, alignment: .center)
+      .padding(.horizontal, 16)
     }
-    .padding(.bottom, 16)
     .task {
       await presenter.getGames()
     }
@@ -66,7 +67,7 @@ struct FavoriteView: View {
         .foregroundStyle(.secondary)
         .multilineTextAlignment(.center)
     }
-    .frame(maxWidth: .infinity)
+    .frame(maxWidth: .infinity, alignment: .center)
     .padding(.vertical, 100)
   }
 }

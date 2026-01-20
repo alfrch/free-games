@@ -12,7 +12,7 @@ struct HomeView: View {
   
   var body: some View {
     ScrollView {
-      VStack(alignment: .center, spacing: 16) {
+      VStack(alignment: .leading, spacing: 16) {
         headerView
         if presenter.isLoading {
           ProgressView()
@@ -20,7 +20,8 @@ struct HomeView: View {
           gameList
         }
       }
-      .padding(.bottom, 16)
+      .frame(maxWidth: .infinity, alignment: .center)
+      .padding(.horizontal, 16)
     }
     .task {
       await presenter.getGames()

@@ -21,6 +21,7 @@ struct GameCard: View {
           image
             .resizable()
             .aspectRatio(contentMode: .fill)
+            .frame(minWidth: 0, maxWidth: .infinity)
         } placeholder: {
           ProgressView()
         }
@@ -66,7 +67,6 @@ struct GameCard: View {
     .background(Color(.systemBackground))
     .cornerRadius(16)
     .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
-    .padding(.horizontal)
     .padding(.vertical, 4)
   }
 }

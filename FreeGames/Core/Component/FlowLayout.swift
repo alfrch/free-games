@@ -15,24 +15,26 @@ struct FlowLayout: Layout {
     subviews: Subviews,
     cache: inout ()
   ) -> CGSize {
-    let maxWidth = proposal.width ?? .infinity
-    var width: CGFloat = 0
-    var height: CGFloat = 0
+    let maxWidth = proposal.width ?? 0
+    var currentX: CGFloat = 0
+    var totalHeight: CGFloat = 0
     var rowHeight: CGFloat = 0
+    var maxRowWidth: CGFloat = 0
     
     for view in subviews {
       let size = view.sizeThatFits(.unspecified)
-      if width + size.width > maxWidth {
-        width = 0
-        height += rowHeight + spacing
+      if currentX + size.width > maxWidth && currentX > 0 {
+        currentX = 0
+        totalHeight += rowHeight + spacing
         rowHeight = 0
       }
-      width += size.width + spacing
+      currentX += size.width + spacing
       rowHeight = max(rowHeight, size.height)
+      maxRowWidth = max(maxRowWidth, currentX)
     }
     
-    height += rowHeight
-    return CGSize(width: maxWidth, height: height)
+    totalHeight += rowHeight
+    return CGSize(width: min(maxRowWidth, maxWidth), height: totalHeight)
   }
   
   func placeSubviews(
