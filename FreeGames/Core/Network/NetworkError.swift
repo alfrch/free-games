@@ -7,12 +7,27 @@
 
 import Foundation
 
-enum NetworkError: LocalizedError {
+enum NetworkError: LocalizedError, Equatable {
   case invalidResponse
   case addressUnreachable(URL)
   case invalidURL
   case parsingError
   case unknown(Error)
+  
+  static func == (lhs: NetworkError, rhs: NetworkError) -> Bool {
+    switch (lhs, rhs) {
+    case (.invalidResponse, .invalidResponse),
+      (.invalidURL, .invalidURL),
+      (.parsingError, .parsingError):
+      return true
+    case (.addressUnreachable(let lhsURL), .addressUnreachable(let rhsURL)):
+      return lhsURL == rhsURL
+    case (.unknown(let lhsError), .unknown(let rhsError)):
+      return lhsError.localizedDescription == rhsError.localizedDescription
+    default:
+      return false
+    }
+  }
   
   var errorDescription: String? {
     switch self {
