@@ -23,8 +23,16 @@ struct HomeView: View {
       .frame(maxWidth: .infinity, alignment: .center)
       .padding(.horizontal, 16)
     }
+    .searchable(
+      text: $presenter.searchText,
+      placement: .navigationBarDrawer(displayMode: .always),
+      prompt: "Search games..."
+    )
+    .onAppear {
+      presenter.refreshFavorites()
+    }
     .task {
-      await presenter.getGames()
+      await presenter.loadIfNeeded()
     }
   }
   
