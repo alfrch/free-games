@@ -56,22 +56,30 @@ class HomePresenter: ObservableObject {
       .store(in: &cancellables)
   }
   
-  private func getGames() async {
+  private func getGames() {
     isLoading = true
     defer { isLoading = false }
     
-    do {
-      let result = try await useCase.getGames()
-      self.allGames = result
-      self.games = result
-    } catch {
-      self.errorMessage = error.localizedDescription
-    }
+    useCase.getGames()
+      .receive(on: RunLoop.main)
+      .sink { [weak self] completion in
+        guard let self else { return }
+        switch completion {
+        case .finished: break
+        case .failure(let error):
+          self.errorMessage = error.localizedDescription
+        }
+      } receiveValue: { [weak self] result in
+        guard let self else { return }
+        self.allGames = result
+        self.games = result
+      }
+      .store(in: &cancellables)
   }
   
-  func loadIfNeeded() async {
+  func loadIfNeeded() {
     guard allGames.isEmpty else { return }
-    await getGames()
+    getGames()
   }
   
   func toggleFavorite(for gameId: Int) {

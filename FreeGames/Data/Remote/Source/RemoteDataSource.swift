@@ -7,9 +7,10 @@
 
 import Foundation
 import Alamofire
+import Combine
 
 protocol RemoteDataSourceProtocol: AnyObject {
-  func getGames() async throws -> [GameResponse]
+  func getGames() -> AnyPublisher<[GameResponse], Error>
 }
 
 final class RemoteDataSource: RemoteDataSourceProtocol {
@@ -18,23 +19,30 @@ final class RemoteDataSource: RemoteDataSourceProtocol {
   
   private init() {}
   
-  func getGames() async throws -> [GameResponse] {
-    guard let url = URL(string: Endpoints.Gets.giveaways.url) else {
-      throw NetworkError.invalidURL
-    }
-    
-    do {
-      return try await AF.request(url)
-        .validate()
-        .serializingDecodable([GameResponse].self)
-        .value
-    } catch {
-      if let afError = error.asAFError {
-        if afError.isResponseSerializationError {
-          throw NetworkError.parsingError
-        }
+  func getGames() -> AnyPublisher<[GameResponse], Error> {
+    return Future<[GameResponse], Error> { completion in
+      guard let url = URL(string: Endpoints.Gets.giveaways.url) else {
+        completion(.failure(NetworkError.invalidURL))
+        return
       }
-      throw NetworkError.invalidResponse
+      
+      AF.request(url)
+        .validate()
+        .responseDecodable(of: GameResponse.self) { response in
+          switch response.result {
+          case .success(let games):
+            completion(.success([games]))
+          case .failure(let error):
+            if let afError = error.asAFError {
+              if afError.isResponseSerializationError {
+                completion(.failure(NetworkError.parsingError))
+                return
+              }
+            }
+            completion(.failure(NetworkError.invalidResponse))
+          }
+        }
     }
+    .eraseToAnyPublisher()
   }
 }

@@ -25,8 +25,8 @@ struct FavoriteView: View {
       .frame(maxWidth: .infinity, alignment: .center)
       .padding(.horizontal, 16)
     }
-    .task {
-      await presenter.getGames()
+    .onAppear {
+      presenter.getGames()
     }
   }
   

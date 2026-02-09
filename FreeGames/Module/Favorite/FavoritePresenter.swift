@@ -40,17 +40,25 @@ final class FavoritePresenter: ObservableObject {
     games = allGames.filter { favoriteIds.contains($0.id) }
   }
   
-  func getGames() async {
+  func getGames() {
     isLoading = true
     defer { isLoading = false }
     
-    do {
-      let result = try await useCase.getGames()
-      self.allGames = result
-      applyFilter()
-    } catch {
-      self.errorMessage = error.localizedDescription
-    }
+    useCase.getGames()
+      .receive(on: RunLoop.main)
+      .sink { [weak self] completion in
+        guard let self else { return }
+        switch completion {
+        case .finished: break
+        case .failure(let error):
+          self.errorMessage = error.localizedDescription
+        }
+      } receiveValue: { [weak self] result in
+        guard let self else { return }
+        self.allGames = result
+        applyFilter()
+      }
+      .store(in: &cancellables)
   }
   
   func toggleFavorite(for gameId: Int) {

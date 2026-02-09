@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol HomeUseCase {
-  func getGames() async throws -> [GameModel]
+  func getGames() -> AnyPublisher<[GameModel], Error>
   func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
   func updateFavoriteId(id: Int)
 }
@@ -21,8 +21,8 @@ final class HomeInteractor: HomeUseCase {
     self.repository = repository
   }
   
-  func getGames() async throws -> [GameModel] {
-    return try await repository.getGames()
+  func getGames() -> AnyPublisher<[GameModel], Error> {
+    return repository.getGames()
   }
   
   func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {

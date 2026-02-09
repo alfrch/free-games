@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol GameRepositoryProtocol {
-  func getGames() async throws -> [GameModel]
+  func getGames() -> AnyPublisher<[GameModel], Error>
   func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
   func updateFavorite(id: Int)
 }
@@ -27,13 +27,10 @@ final class GameRepository: GameRepositoryProtocol {
     self.local = local
   }
   
-  func getGames() async throws -> [GameModel] {
-    do {
-      let gameResponses = try await remote.getGames()
-      return GameMapper.mapGameResponsesToDomains(input: gameResponses)
-    } catch {
-      throw error
-    }
+  func getGames() -> AnyPublisher<[GameModel], Error> {
+    return remote.getGames()
+      .map { GameMapper.mapGameResponsesToDomains(input: $0) }
+      .eraseToAnyPublisher()
   }
   
   func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {
