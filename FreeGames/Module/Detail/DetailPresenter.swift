@@ -14,20 +14,24 @@ final class DetailPresenter: ObservableObject {
   @Published var isFavorite = false
   
   private let useCase: DetailUseCase
+  private var cancellables = Set<AnyCancellable>()
   
   init(useCase: DetailUseCase, game: GameModel) {
     self.useCase = useCase
     self.game = game
-    checkFavoriteStatus()
+    setupFavoriteBinding()
   }
   
-  func checkFavoriteStatus() {
-    let favorites = useCase.getFavoriteIds()
-    self.isFavorite = favorites.contains(game.id)
+  private func setupFavoriteBinding() {
+    useCase.getFavoriteIds()
+      .sink { [weak self] ids in
+        guard let self else { return }
+        self.isFavorite = ids.contains(self.game.id)
+      }
+      .store(in: &cancellables)
   }
   
   func toggleFavorite() {
     useCase.updateFavoriteId(id: game.id)
-    isFavorite.toggle()
   }
 }

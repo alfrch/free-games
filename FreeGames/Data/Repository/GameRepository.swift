@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Combine
 
 protocol GameRepositoryProtocol {
   func getGames() async throws -> [GameModel]
-  func getFavoriteIds() -> Set<Int>
+  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
   func updateFavorite(id: Int)
 }
 
@@ -35,7 +36,7 @@ final class GameRepository: GameRepositoryProtocol {
     }
   }
   
-  func getFavoriteIds() -> Set<Int> {
+  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {
     return local.getFavoritedIds()
   }
   

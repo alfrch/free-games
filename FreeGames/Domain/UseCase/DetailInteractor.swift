@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Combine
 
 protocol DetailUseCase {
-  func getFavoriteIds() -> Set<Int>
+  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
   func updateFavoriteId(id: Int)
 }
 
@@ -19,7 +20,7 @@ final class DetailInteractor: DetailUseCase {
     self.repository = repository
   }
   
-  func getFavoriteIds() -> Set<Int> {
+  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {
     return repository.getFavoriteIds()
   }
   

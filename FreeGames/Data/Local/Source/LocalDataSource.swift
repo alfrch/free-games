@@ -6,27 +6,32 @@
 //
 
 import Foundation
+import Combine
 
 protocol LocalDataSourceProtocol: AnyObject {
-  func getFavoritedIds() -> Set<Int>
+  func getFavoritedIds() -> AnyPublisher<Set<Int>, Never>
   func toggleFavorite(id: Int)
 }
 
 final class LocalDataSource: LocalDataSourceProtocol {
   
   static let shared = LocalDataSource()
+  
   private let favoritesKey = "user_favorites_games"
   private let defaults = UserDefaults.standard
+  private let favoriteSubject: CurrentValueSubject<Set<Int>, Never>
   
-  private init() {}
+  private init() {
+    let stored = defaults.array(forKey: favoritesKey) as? [Int] ?? []
+    favoriteSubject = CurrentValueSubject(Set(stored))
+  }
   
-  func getFavoritedIds() -> Set<Int> {
-    let array = defaults.array(forKey: favoritesKey) as? [Int] ?? []
-    return Set(array)
+  func getFavoritedIds() -> AnyPublisher<Set<Int>, Never> {
+    favoriteSubject.eraseToAnyPublisher()
   }
   
   func toggleFavorite(id: Int) {
-    var favorites = getFavoritedIds()
+    var favorites = favoriteSubject.value
     
     if favorites.contains(id) {
       favorites.remove(id)
@@ -35,5 +40,7 @@ final class LocalDataSource: LocalDataSourceProtocol {
     }
     
     defaults.set(Array(favorites), forKey: favoritesKey)
+    favoriteSubject.value = favorites
+    favoriteSubject.send(favorites)
   }
 }

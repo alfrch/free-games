@@ -28,9 +28,6 @@ struct HomeView: View {
       placement: .navigationBarDrawer(displayMode: .always),
       prompt: "Search games..."
     )
-    .onAppear {
-      presenter.refreshFavorites()
-    }
     .task {
       await presenter.loadIfNeeded()
     }

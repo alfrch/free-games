@@ -19,19 +19,35 @@ final class FavoritePresenter: ObservableObject {
   private let router = HomeRouter()
   private let useCase: HomeUseCase
   
+  private var cancellables = Set<AnyCancellable>()
+  private var allGames: [GameModel] = []
+  
   init(useCase: HomeUseCase) {
     self.useCase = useCase
+    self.setupFavoriteBinding()
+  }
+  
+  private func setupFavoriteBinding() {
+    useCase.getFavoriteIds()
+      .receive(on: RunLoop.main)
+      .sink { [weak self] ids in
+        self?.favoriteIds = ids
+      }
+      .store(in: &cancellables)
+  }
+  
+  private func applyFilter() {
+    games = allGames.filter { favoriteIds.contains($0.id) }
   }
   
   func getGames() async {
     isLoading = true
     defer { isLoading = false }
     
-    self.favoriteIds = useCase.getFavoriteIds()
-    
     do {
-      let allGames = try await useCase.getGames()
-      self.games = allGames.filter { favoriteIds.contains($0.id) }
+      let result = try await useCase.getGames()
+      self.allGames = result
+      applyFilter()
     } catch {
       self.errorMessage = error.localizedDescription
     }
@@ -39,13 +55,6 @@ final class FavoritePresenter: ObservableObject {
   
   func toggleFavorite(for gameId: Int) {
     useCase.updateFavoriteId(id: gameId)
-    
-    if favoriteIds.contains(gameId) {
-      favoriteIds.remove(gameId)
-      games.removeAll { $0.id == gameId }
-    } else {
-      favoriteIds.insert(gameId)
-    }
   }
   
   func isFavorite(_ gameId: Int) -> Bool {

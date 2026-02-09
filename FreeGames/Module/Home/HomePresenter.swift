@@ -26,6 +26,7 @@ class HomePresenter: ObservableObject {
   init(useCase: HomeUseCase) {
     self.useCase = useCase
     setupSearchBinding()
+    setupFavoriteBinding()
   }
   
   private func setupSearchBinding() {
@@ -46,11 +47,18 @@ class HomePresenter: ObservableObject {
       .store(in: &cancellables)
   }
   
+  private func setupFavoriteBinding() {
+    useCase.getFavoriteIds()
+      .receive(on: RunLoop.main)
+      .sink { [weak self] ids in
+        self?.favoriteIds = ids
+      }
+      .store(in: &cancellables)
+  }
+  
   private func getGames() async {
     isLoading = true
     defer { isLoading = false }
-    
-    refreshFavorites()
     
     do {
       let result = try await useCase.getGames()
@@ -66,18 +74,8 @@ class HomePresenter: ObservableObject {
     await getGames()
   }
   
-  func refreshFavorites() {
-    self.favoriteIds = useCase.getFavoriteIds()
-  }
-  
   func toggleFavorite(for gameId: Int) {
     useCase.updateFavoriteId(id: gameId)
-    
-    if favoriteIds.contains(gameId) {
-      favoriteIds.remove(gameId)
-    } else {
-      favoriteIds.insert(gameId)
-    }
   }
   
   func isFavorite(_ gameId: Int) -> Bool {
