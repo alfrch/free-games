@@ -28,10 +28,10 @@ final class RemoteDataSource: RemoteDataSourceProtocol {
       
       AF.request(url)
         .validate()
-        .responseDecodable(of: GameResponse.self) { response in
+        .responseDecodable(of: [GameResponse].self) { response in
           switch response.result {
           case .success(let games):
-            completion(.success([games]))
+            completion(.success(games))
           case .failure(let error):
             if let afError = error.asAFError {
               if afError.isResponseSerializationError {
