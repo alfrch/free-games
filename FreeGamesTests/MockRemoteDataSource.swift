@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Combine
 @testable import FreeGames
 
 final class MockRemoteDataSource: RemoteDataSourceProtocol {
@@ -13,14 +14,25 @@ final class MockRemoteDataSource: RemoteDataSourceProtocol {
   var result: Result<[GameResponse], Error> = .success([])
   var isGetGamesCalled = false
   
-  func getGames() async throws -> [GameResponse] {
+  private let subject = PassthroughSubject<[GameResponse], Error>()
+  var useSubject = false
+  
+  func getGames() -> AnyPublisher<[GameResponse], Error> {
     isGetGamesCalled = true
+    
+    if useSubject {
+      return subject.eraseToAnyPublisher()
+    }
     
     switch result {
     case .success(let games):
-      return games
+      return Just(games)
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+      
     case .failure(let error):
-      throw error
+      return Fail(error: error)
+        .eraseToAnyPublisher()
     }
   }
 }

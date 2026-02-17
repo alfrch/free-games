@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Combine
 @testable import FreeGames
 
 @MainActor
@@ -14,16 +15,19 @@ final class GameRepositoryTests: XCTestCase {
   private var sut: GameRepository! // System Under Test
   private var mockRemote: MockRemoteDataSource!
   private var mockLocal: MockLocalDataSource!
+  private var cancellables: Set<AnyCancellable>!
   
   override func setUp() {
     super.setUp()
     mockRemote = MockRemoteDataSource()
     mockLocal = MockLocalDataSource()
+    cancellables = []
     // Dependency Injection
     sut = GameRepository(remote: mockRemote, local: mockLocal)
   }
   
   override func tearDown() {
+    cancellables = nil
     sut = nil
     mockRemote = nil
     mockLocal = nil
@@ -59,24 +63,50 @@ final class GameRepositoryTests: XCTestCase {
       url: "url"
     )
     
-    // When
-    let games = try await sut.getGames()
+    let expectation = XCTestExpectation(description: "Receive mapped games")
     
-    // Then
-    let firstGame = games.first
-    XCTAssertEqual(firstGame, expectedModel)
+    // When
+    sut.getGames()
+      .sink(
+        receiveCompletion: { completion in
+          if case .failure(let error) = completion {
+            XCTFail("Unexpected error: \(error)")
+          }
+        },
+        receiveValue: { games in
+          // Then
+          XCTAssertEqual(games.first, expectedModel)
+          expectation.fulfill()
+        }
+      )
+      .store(in: &cancellables)
+    
+//    wait(for: [expectation], timeout: 1)
+    XCTAssertTrue(mockRemote.isGetGamesCalled)
   }
   
-  func test_getGames_failed_shouldThrowError() async {
+  func test_getGames_failed_shouldReturnError() {
     // Given
     mockRemote.result = .failure(NetworkError.invalidResponse)
+    let expectation = XCTestExpectation(description: "Receive error")
     
-    // When & Then
-    do {
-      _ = try await sut.getGames()
-    } catch {
-      XCTAssertEqual(error as? NetworkError, .invalidResponse, "Error yang dilempar seharusnya invalidResponse")
-    }
+    // When
+    sut.getGames()
+      .sink(
+        receiveCompletion: { completion in
+          if case .failure(let error) = completion {
+            // Then
+            XCTAssertEqual(error as? NetworkError, .invalidResponse)
+            expectation.fulfill()
+          }
+        },
+        receiveValue: { _ in
+          XCTFail("Should not receive value")
+        }
+      )
+      .store(in: &cancellables)
+    
+    wait(for: [expectation], timeout: 1)
   }
   
   func test_updateFavorite_shouldCallLocalDataSource() {

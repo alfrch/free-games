@@ -6,12 +6,26 @@
 //
 
 import XCTest
+import Combine
 @testable import FreeGames
 
 final class MockLocalDataSource: LocalDataSourceProtocol {
   
-  var mockIds: Set<Int> = []
+  private let subject: CurrentValueSubject<Set<Int>, Never>
+  
+  var mockIds: Set<Int> {
+    get { subject.value }
+    set { subject.value = newValue }
+  }
   var toggleCalledWithId: Int?
+  
+  init(initialIds: Set<Int> = []) {
+    subject = CurrentValueSubject(initialIds)
+  }
+  
+  func getFavoritedIds() -> AnyPublisher<Set<Int>, Never> {
+    subject.eraseToAnyPublisher()
+  }
   
   func getFavoritedIds() -> Set<Int> {
     return mockIds
@@ -19,10 +33,15 @@ final class MockLocalDataSource: LocalDataSourceProtocol {
   
   func toggleFavorite(id: Int) {
     toggleCalledWithId = id
-    if mockIds.contains(id) {
-      mockIds.remove(id)
+    
+    var current = subject.value
+    
+    if current.contains(id) {
+      current.remove(id)
     } else {
-      mockIds.insert(id)
+      current.insert(id)
     }
+    
+    subject.send(current)
   }
 }
