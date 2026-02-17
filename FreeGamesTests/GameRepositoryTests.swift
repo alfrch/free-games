@@ -36,7 +36,7 @@ final class GameRepositoryTests: XCTestCase {
   
   // MARK: - TESTS
   
-  func test_getGames_success_fullComparison() async throws {
+  func test_getGames_success_fullComparison() {
     // Given
     let mockResponse = [
       GameResponse(
@@ -81,7 +81,7 @@ final class GameRepositoryTests: XCTestCase {
       )
       .store(in: &cancellables)
     
-//    wait(for: [expectation], timeout: 1)
+    wait(for: [expectation], timeout: 1)
     XCTAssertTrue(mockRemote.isGetGamesCalled)
   }
   
