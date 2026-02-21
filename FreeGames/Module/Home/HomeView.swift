@@ -43,13 +43,7 @@ struct HomeView: View {
   var gameList: some View {
     ForEach(presenter.games) { game in
       self.presenter.linkBuilder(for: game) {
-        GameCard(
-          game: game,
-          isFavorite: presenter.isFavorite(game.id),
-          onFavoriteToggle: {
-            // TODO: Refactor favorite use case
-          }
-        )
+        GameCard(game: game)
       }
       .buttonStyle(.plain)
     }

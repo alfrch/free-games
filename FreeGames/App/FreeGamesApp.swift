@@ -9,8 +9,8 @@ import SwiftUI
 
 @main
 struct FreeGamesApp: App {
-  @StateObject var homePresenter = HomePresenter(useCase: Injection().provideHome())
-  @StateObject var favoritePresenter = FavoritePresenter(useCase: Injection().provideHome())
+  @StateObject var homePresenter = HomePresenter(useCase: Injection().provideGames())
+  @StateObject var favoritePresenter = FavoritePresenter(useCase: Injection().provideFavorite())
   @StateObject var aboutPresenter = AboutPresenter()
   
   var body: some Scene {

@@ -18,12 +18,12 @@ class HomePresenter: ObservableObject {
   @Published var searchText = ""
   
   private let router = HomeRouter()
-  private let useCase: HomeUseCase
+  private let useCase: GetGamesUseCase
   
   private var allGames: [GameModel] = []
   private var cancellables = Set<AnyCancellable>()
   
-  init(useCase: HomeUseCase) {
+  init(useCase: GetGamesUseCase) {
     self.useCase = useCase
     setupSearchBinding()
   }
@@ -70,10 +70,6 @@ class HomePresenter: ObservableObject {
   func loadIfNeeded() {
     guard allGames.isEmpty else { return }
     getGames()
-  }
-  
-  func isFavorite(_ gameId: Int) -> Bool {
-    favoriteIds.contains(gameId)
   }
   
   func linkBuilder<Content: View>(

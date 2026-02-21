@@ -12,29 +12,23 @@ import Combine
 final class FavoritePresenter: ObservableObject {
   
   @Published var games: [GameModel] = []
-  @Published var favoriteIds: Set<Int> = []
   @Published var errorMessage: String?
   @Published var isLoading = false
   
   private let router = HomeRouter()
-  private let useCase: HomeUseCase
+  private let useCase: FavoriteUseCase
   
   private var cancellables = Set<AnyCancellable>()
-  private var allGames: [GameModel] = []
   
-  init(useCase: HomeUseCase) {
+  init(useCase: FavoriteUseCase) {
     self.useCase = useCase
-  }
-  
-  private func applyFilter() {
-    games = allGames.filter { favoriteIds.contains($0.id) }
   }
   
   func getGames() {
     isLoading = true
     defer { isLoading = false }
     
-    useCase.getGames()
+    useCase.getFavoriteGames()
       .receive(on: RunLoop.main)
       .sink { [weak self] completion in
         guard let self else { return }
@@ -45,18 +39,9 @@ final class FavoritePresenter: ObservableObject {
         }
       } receiveValue: { [weak self] result in
         guard let self else { return }
-        self.allGames = result
-        applyFilter()
+        self.games = result
       }
       .store(in: &cancellables)
-  }
-  
-  func toggleFavorite(for gameId: Int) {
-    getGames()
-  }
-  
-  func isFavorite(_ gameId: Int) -> Bool {
-    favoriteIds.contains(gameId)
   }
   
   func linkBuilder<Content: View>(

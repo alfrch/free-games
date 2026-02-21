@@ -10,8 +10,6 @@ import CachedAsyncImage
 
 struct GameCard: View {
   let game: GameModel
-  let isFavorite: Bool
-  let onFavoriteToggle: () -> Void
   
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -27,18 +25,6 @@ struct GameCard: View {
         }
         .frame(height: 200)
         .clipped()
-        
-        // Favorite Button
-        Button {
-          onFavoriteToggle()
-        } label: {
-          Image(systemName: isFavorite ? "heart.fill" : "heart")
-            .foregroundStyle(isFavorite ? .red : .gray)
-            .padding(8)
-            .background(.ultraThinMaterial)
-            .clipShape(Circle())
-        }
-        .padding(12)
       }
       
       // Content
@@ -82,5 +68,5 @@ struct GameCard: View {
     platforms: ["PC", "Playstation 4", "Xbox One", "Nintendo Switch", "Android", "iOS"],
     url: "https://www.gamerpower.com/dumb-ways-to-die-mobile-giveaway"
   )
-  GameCard(game: game, isFavorite: false, onFavoriteToggle: {})
+  GameCard(game: game)
 }

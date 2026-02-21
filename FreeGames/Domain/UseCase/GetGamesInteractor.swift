@@ -1,18 +1,19 @@
 //
-//  HomeUseCase.swift
+//  Untitled.swift
 //  FreeGames
 //
-//  Created by Alif Rachmawan on 17/01/26.
+//  Created by Alif Rachmawan on 21/02/26.
 //
 
 import Foundation
 import Combine
 
-protocol HomeUseCase {
+protocol GetGamesUseCase {
   func getGames() -> AnyPublisher<[GameModel], Error>
 }
 
-final class HomeInteractor: HomeUseCase {
+final class GetGamesInteractor: GetGamesUseCase {
+  
   private let repository: GameRepositoryProtocol
   
   init(repository: GameRepositoryProtocol) {

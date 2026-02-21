@@ -23,9 +23,14 @@ final class Injection {
     return Self.sharedRepository
   }
   
-  func provideHome() -> HomeUseCase {
+  func provideGames() -> GetGamesUseCase {
     let repository = provideRepository()
-    return HomeInteractor(repository: repository)
+    return GetGamesInteractor(repository: repository)
+  }
+  
+  func provideFavorite() -> FavoriteUseCase {
+    let repository = provideRepository()
+    return FavoriteInteractor(repository: repository)
   }
   
   func provideDetail(game: GameModel) -> DetailUseCase {

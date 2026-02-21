@@ -37,13 +37,13 @@ final class GameRepository: GameRepositoryProtocol {
       .eraseToAnyPublisher()
   }
   
-  func getFavoriteGames() -> AnyPublisher<[GameModel], any Error> {
+  func getFavoriteGames() -> AnyPublisher<[GameModel], Error> {
     return self.local.getFavoriteGames()
       .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
       .eraseToAnyPublisher()
   }
   
-  func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, any Error> {
+  func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, Error> {
     return self.local.updateFavoriteGame(by: gameId)
       .map { GameMapper.mapGameEntityToDomain(input: $0) }
       .eraseToAnyPublisher()
