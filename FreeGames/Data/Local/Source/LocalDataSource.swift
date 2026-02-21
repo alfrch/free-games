@@ -7,40 +7,102 @@
 
 import Foundation
 import Combine
+import RealmSwift
 
 protocol LocalDataSourceProtocol: AnyObject {
-  func getFavoritedIds() -> AnyPublisher<Set<Int>, Never>
-  func toggleFavorite(id: Int)
+  func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error>
+  func getFavoriteGames() -> AnyPublisher<[GameEntity], Error>
+  func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameEntity, Error>
 }
 
 final class LocalDataSource: LocalDataSourceProtocol {
   
-  static let shared = LocalDataSource()
+  private let realm: Realm?
   
-  private let favoritesKey = "user_favorites_games"
-  private let defaults = UserDefaults.standard
-  private let favoriteSubject: CurrentValueSubject<Set<Int>, Never>
-  
-  private init() {
-    let stored = defaults.array(forKey: favoritesKey) as? [Int] ?? []
-    favoriteSubject = CurrentValueSubject(Set(stored))
+  private init(realm: Realm?) {
+    self.realm = realm
   }
   
-  func getFavoritedIds() -> AnyPublisher<Set<Int>, Never> {
-    favoriteSubject.eraseToAnyPublisher()
+  static let shared: (Realm?) -> LocalDataSource = { realm in
+    return LocalDataSource(realm: realm)
   }
   
-  func toggleFavorite(id: Int) {
-    var favorites = favoriteSubject.value
-    
-    if favorites.contains(id) {
-      favorites.remove(id)
-    } else {
-      favorites.insert(id)
+  func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error> {
+    Future { completion in
+      guard let realm = self.realm else {
+        completion(.failure(DatabaseError.invalidInstance))
+        return
+      }
+      
+      do {
+        try realm.write {
+          realm.add(games, update: .modified)
+        }
+        completion(.success(games))
+      } catch {
+        completion(.failure(DatabaseError.requestFailed))
+      }
     }
-    
-    defaults.set(Array(favorites), forKey: favoritesKey)
-    favoriteSubject.value = favorites
-    favoriteSubject.send(favorites)
+    .eraseToAnyPublisher()
   }
+  
+  func getFavoriteGames() -> AnyPublisher<[GameEntity], any Error> {
+    return Future<[GameEntity], Error> { [weak self] completion in
+      guard let self else { return }
+      if let realm = self.realm {
+        let gameEntities = {
+          realm.objects(GameEntity.self)
+            .filter("favorite = \(true)")
+            .sorted(byKeyPath: "title", ascending: true)
+        }()
+        completion(.success(gameEntities.toArray(ofType: GameEntity.self)))
+      } else {
+        completion(.failure(DatabaseError.invalidInstance))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  func updateFavoriteGame(
+    by gameId: String
+  ) -> AnyPublisher<GameEntity, Error> {
+    
+    Future { completion in
+      guard let realm = self.realm else {
+        completion(.failure(DatabaseError.invalidInstance))
+        return
+      }
+      
+      guard let gameEntity = realm.objects(GameEntity.self)
+        .filter("id == %@", gameId)
+        .first else {
+        completion(.failure(DatabaseError.invalidInstance))
+        return
+      }
+      
+      do {
+        try realm.write {
+          gameEntity.favorite.toggle()
+        }
+        completion(.success(gameEntity))
+      } catch {
+        completion(.failure(DatabaseError.requestFailed))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+}
+
+extension Results {
+  
+  func toArray<T>(ofType: T.Type) -> [T] {
+    var array = [T]()
+    for index in 0 ..< count {
+      if let result = self[index] as? T {
+        array.append(result)
+      }
+    }
+    return array
+  }
+  
 }

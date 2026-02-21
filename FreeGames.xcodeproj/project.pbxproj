@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A45D2F1B2F2600A42D68 /* Alamofire */; };
 		EE47A4FB2F1B99D200A42D68 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */; };
+		EEC2D0A82F49709F00788279 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EEC2D0A72F49709F00788279 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEC2D0A82F49709F00788279 /* RealmSwift in Frameworks */,
 				EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */,
 				EE47A4FB2F1B99D200A42D68 /* CachedAsyncImage in Frameworks */,
 			);
@@ -136,6 +138,7 @@
 			packageProductDependencies = (
 				EE47A45D2F1B2F2600A42D68 /* Alamofire */,
 				EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */,
+				EEC2D0A72F49709F00788279 /* RealmSwift */,
 			);
 			productName = FreeGames;
 			productReference = EEF265C52F19EA33006AE6B1 /* FreeGames.app */;
@@ -173,6 +176,7 @@
 			packageReferences = (
 				EE47A45C2F1B2F2600A42D68 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				EE47A4F92F1B99D200A42D68 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EEF265C62F19EA33006AE6B1 /* Products */;
@@ -535,6 +539,14 @@
 				minimumVersion = 2.1.1;
 			};
 		};
+		EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -547,6 +559,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EE47A4F92F1B99D200A42D68 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
+		};
+		EEC2D0A72F49709F00788279 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

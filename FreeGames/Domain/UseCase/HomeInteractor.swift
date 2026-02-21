@@ -10,8 +10,6 @@ import Combine
 
 protocol HomeUseCase {
   func getGames() -> AnyPublisher<[GameModel], Error>
-  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
-  func updateFavoriteId(id: Int)
 }
 
 final class HomeInteractor: HomeUseCase {
@@ -23,13 +21,5 @@ final class HomeInteractor: HomeUseCase {
   
   func getGames() -> AnyPublisher<[GameModel], Error> {
     return repository.getGames()
-  }
-  
-  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {
-    return repository.getFavoriteIds()
-  }
-  
-  func updateFavoriteId(id: Int) {
-    repository.updateFavorite(id: id)
   }
 }

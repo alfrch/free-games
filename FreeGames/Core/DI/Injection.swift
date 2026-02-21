@@ -6,13 +6,16 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class Injection {
   
   private static let sharedRepository: GameRepositoryProtocol = {
+    let realm = try? Realm()
+    
     return GameRepository(
       remote: RemoteDataSource.shared,
-      local: LocalDataSource.shared
+      local: LocalDataSource.shared(realm)
     )
   }()
   
@@ -25,8 +28,8 @@ final class Injection {
     return HomeInteractor(repository: repository)
   }
   
-  func provideDetail() -> DetailUseCase {
+  func provideDetail(game: GameModel) -> DetailUseCase {
     let repository = provideRepository()
-    return DetailInteractor(repository: repository)
+    return DetailInteractor(repository: repository, game: game)
   }
 }

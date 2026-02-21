@@ -24,16 +24,6 @@ final class FavoritePresenter: ObservableObject {
   
   init(useCase: HomeUseCase) {
     self.useCase = useCase
-    self.setupFavoriteBinding()
-  }
-  
-  private func setupFavoriteBinding() {
-    useCase.getFavoriteIds()
-      .receive(on: RunLoop.main)
-      .sink { [weak self] ids in
-        self?.favoriteIds = ids
-      }
-      .store(in: &cancellables)
   }
   
   private func applyFilter() {
@@ -62,7 +52,7 @@ final class FavoritePresenter: ObservableObject {
   }
   
   func toggleFavorite(for gameId: Int) {
-    useCase.updateFavoriteId(id: gameId)
+    getGames()
   }
   
   func isFavorite(_ gameId: Int) -> Bool {

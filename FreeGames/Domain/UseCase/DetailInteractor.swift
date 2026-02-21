@@ -9,22 +9,25 @@ import Foundation
 import Combine
 
 protocol DetailUseCase {
-  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
-  func updateFavoriteId(id: Int)
+  func getGame() -> GameModel
+  func updateFavoriteGame() -> AnyPublisher<GameModel, Error>
 }
 
 final class DetailInteractor: DetailUseCase {
+  
   private let repository: GameRepositoryProtocol
+  private let game: GameModel
   
-  init(repository: GameRepositoryProtocol) {
+  init(repository: GameRepositoryProtocol, game: GameModel) {
     self.repository = repository
+    self.game = game
   }
   
-  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {
-    return repository.getFavoriteIds()
+  func getGame() -> GameModel {
+    return game
   }
   
-  func updateFavoriteId(id: Int) {
-    repository.updateFavorite(id: id)
+  func updateFavoriteGame() -> AnyPublisher<GameModel, Error> {
+    return repository.updateFavoriteGame(by: "\(game.id)")
   }
 }

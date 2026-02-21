@@ -16,4 +16,5 @@ struct GameModel: Identifiable, Equatable {
   let type: String
   let platforms: [String]
   let url: String
+  var favorite: Bool = false
 }

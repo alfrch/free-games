@@ -10,28 +10,36 @@ import Combine
 
 @MainActor
 final class DetailPresenter: ObservableObject {
+  
   @Published var game: GameModel
   @Published var isFavorite = false
+  @Published var isLoading = false
+  @Published var errorMessage: String?
   
-  private let useCase: DetailUseCase
+  private let detailUseCase: DetailUseCase
   private var cancellables = Set<AnyCancellable>()
   
-  init(useCase: DetailUseCase, game: GameModel) {
-    self.useCase = useCase
-    self.game = game
-    setupFavoriteBinding()
+  init(detailUseCase: DetailUseCase) {
+    self.detailUseCase = detailUseCase
+    game = detailUseCase.getGame()
   }
   
-  private func setupFavoriteBinding() {
-    useCase.getFavoriteIds()
-      .sink { [weak self] ids in
+  func updateFavoriteGame() {
+    isLoading = true
+    detailUseCase.updateFavoriteGame()
+      .receive(on: RunLoop.main)
+      .sink(receiveCompletion: { [weak self] completion in
         guard let self else { return }
-        self.isFavorite = ids.contains(self.game.id)
-      }
+        switch completion {
+        case .finished:
+          self.isLoading = false
+        case .failure(let error):
+          self.errorMessage = error.localizedDescription
+        }
+      }, receiveValue: { [weak self] game in
+        guard let self else { return }
+        self.game = game
+      })
       .store(in: &cancellables)
-  }
-  
-  func toggleFavorite() {
-    useCase.updateFavoriteId(id: game.id)
   }
 }

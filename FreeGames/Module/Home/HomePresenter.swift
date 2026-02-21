@@ -26,7 +26,6 @@ class HomePresenter: ObservableObject {
   init(useCase: HomeUseCase) {
     self.useCase = useCase
     setupSearchBinding()
-    setupFavoriteBinding()
   }
   
   private func setupSearchBinding() {
@@ -43,15 +42,6 @@ class HomePresenter: ObservableObject {
             $0.title.localizedCaseInsensitiveContains(keyword)
           }
         }
-      }
-      .store(in: &cancellables)
-  }
-  
-  private func setupFavoriteBinding() {
-    useCase.getFavoriteIds()
-      .receive(on: RunLoop.main)
-      .sink { [weak self] ids in
-        self?.favoriteIds = ids
       }
       .store(in: &cancellables)
   }
@@ -80,10 +70,6 @@ class HomePresenter: ObservableObject {
   func loadIfNeeded() {
     guard allGames.isEmpty else { return }
     getGames()
-  }
-  
-  func toggleFavorite(for gameId: Int) {
-    useCase.updateFavoriteId(id: gameId)
   }
   
   func isFavorite(_ gameId: Int) -> Bool {

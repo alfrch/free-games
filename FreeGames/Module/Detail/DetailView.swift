@@ -24,9 +24,9 @@ struct DetailView: View {
     .toolbar(.hidden, for: .tabBar)
     .toolbar {
       Button {
-        presenter.toggleFavorite()
+        presenter.updateFavoriteGame()
       } label: {
-        Image(systemName: presenter.isFavorite ? "heart.fill" : "heart")
+        Image(systemName: presenter.game.favorite ? "heart.fill" : "heart")
           .foregroundStyle(.red)
       }
     }

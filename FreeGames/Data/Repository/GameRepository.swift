@@ -10,8 +10,8 @@ import Combine
 
 protocol GameRepositoryProtocol {
   func getGames() -> AnyPublisher<[GameModel], Error>
-  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never>
-  func updateFavorite(id: Int)
+  func getFavoriteGames() -> AnyPublisher<[GameModel], Error>
+  func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, Error>
 }
 
 final class GameRepository: GameRepositoryProtocol {
@@ -29,15 +29,23 @@ final class GameRepository: GameRepositoryProtocol {
   
   func getGames() -> AnyPublisher<[GameModel], Error> {
     return remote.getGames()
-      .map { GameMapper.mapGameResponsesToDomains(input: $0) }
+      .map { GameMapper.mapGameResponsesToEntities(input: $0) }
+      .flatMap { entities -> AnyPublisher<[GameEntity], Error> in
+        self.local.saveGames(entities)
+      }
+      .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
       .eraseToAnyPublisher()
   }
   
-  func getFavoriteIds() -> AnyPublisher<Set<Int>, Never> {
-    return local.getFavoritedIds()
+  func getFavoriteGames() -> AnyPublisher<[GameModel], any Error> {
+    return self.local.getFavoriteGames()
+      .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
+      .eraseToAnyPublisher()
   }
   
-  func updateFavorite(id: Int) {
-    local.toggleFavorite(id: id)
+  func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, any Error> {
+    return self.local.updateFavoriteGame(by: gameId)
+      .map { GameMapper.mapGameEntityToDomain(input: $0) }
+      .eraseToAnyPublisher()
   }
 }

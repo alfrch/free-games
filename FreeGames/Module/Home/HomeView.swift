@@ -47,7 +47,7 @@ struct HomeView: View {
           game: game,
           isFavorite: presenter.isFavorite(game.id),
           onFavoriteToggle: {
-            presenter.toggleFavorite(for: game.id)
+            // TODO: Refactor favorite use case
           }
         )
       }
