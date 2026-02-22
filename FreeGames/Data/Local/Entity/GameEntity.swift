@@ -18,7 +18,7 @@ class GameEntity: Object {
   @objc dynamic var url = ""
   @objc dynamic var favorite: Bool = false
   
-  var platforms = [String]()
+  let platforms = List<String>()
   
   override nonisolated static func primaryKey() -> String? {
     return "id"

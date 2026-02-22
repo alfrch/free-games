@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class GameMapper {
   static func mapGameResponsesToDomains(input responses: [GameResponse]) -> [GameModel] {
@@ -32,7 +33,11 @@ final class GameMapper {
       gameEntity.thumbnail = result.thumbnail ?? ""
       gameEntity.desc = result.description ?? "No description available"
       gameEntity.type = result.type ?? "Unknown"
-      gameEntity.platforms = result.platforms?.components(separatedBy: ", ") ?? []
+      
+      
+      let platformArray = result.platforms?.components(separatedBy: ", ") ?? []
+      gameEntity.platforms.removeAll()
+      gameEntity.platforms.append(objectsIn: platformArray)
       return gameEntity
     }
   }
@@ -46,7 +51,7 @@ final class GameMapper {
         thumbnail: result.thumbnail,
         description: result.desc,
         type: result.type,
-        platforms: result.platforms,
+        platforms: Array(result.platforms),
         url: result.url,
         favorite: result.favorite
       )
@@ -61,7 +66,7 @@ final class GameMapper {
       thumbnail: entity.thumbnail,
       description: entity.desc,
       type: entity.type,
-      platforms: entity.platforms,
+      platforms: Array(entity.platforms),
       url: entity.url,
       favorite: entity.favorite
     )
