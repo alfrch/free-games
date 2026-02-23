@@ -28,12 +28,22 @@ final class GameRepository: GameRepositoryProtocol {
   }
   
   func getGames() -> AnyPublisher<[GameModel], Error> {
-    return remote.getGames()
-      .map { GameMapper.mapGameResponsesToEntities(input: $0) }
-      .flatMap { entities -> AnyPublisher<[GameEntity], Error> in
-        self.local.saveGames(entities)
+    return self.local.getGames()
+      .flatMap { result -> AnyPublisher<[GameModel], Error> in
+        if result.isEmpty {
+          return self.remote.getGames()
+            .map { GameMapper.mapGameResponsesToEntities(input: $0) }
+            .catch { _ in self.local.getGames() }
+            .flatMap { self.local.saveGames($0) }
+            .flatMap { _ in self.local.getGames() }
+            .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
+            .eraseToAnyPublisher()
+        } else {
+          return self.local.getGames()
+            .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
+            .eraseToAnyPublisher()
+        }
       }
-      .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
       .eraseToAnyPublisher()
   }
   

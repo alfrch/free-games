@@ -10,6 +10,7 @@ import Combine
 import RealmSwift
 
 protocol LocalDataSourceProtocol: AnyObject {
+  func getGames() -> AnyPublisher<[GameEntity], Error>
   func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error>
   func getFavoriteGames() -> AnyPublisher<[GameEntity], Error>
   func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameEntity, Error>
@@ -27,6 +28,22 @@ final class LocalDataSource: LocalDataSourceProtocol {
     return LocalDataSource(realm: realm)
   }
   
+  func getGames() -> AnyPublisher<[GameEntity], any Error> {
+    Future { [weak self] completion in
+      guard let self else { return }
+      if let realm = self.realm {
+        let gameEntities = {
+          realm.objects(GameEntity.self)
+            .sorted(by: \.title)
+        }()
+        completion(.success(gameEntities.toArray(ofType: GameEntity.self)))
+      } else {
+        completion(.failure(DatabaseError.invalidInstance))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+  
   func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error> {
     Future { completion in
       guard let realm = self.realm else {
@@ -36,7 +53,7 @@ final class LocalDataSource: LocalDataSourceProtocol {
       
       do {
         try realm.write {
-          realm.add(games, update: .modified)
+          realm.add(games, update: .all)
         }
         completion(.success(games))
       } catch {
