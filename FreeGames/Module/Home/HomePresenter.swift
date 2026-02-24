@@ -18,13 +18,13 @@ class HomePresenter: ObservableObject {
   @Published var searchText = ""
   
   private let router = HomeRouter()
-  private let useCase: GetGamesUseCase
+  private let getGamesUseCase: GetGamesUseCase
   
   private var allGames: [GameModel] = []
   private var cancellables = Set<AnyCancellable>()
   
-  init(useCase: GetGamesUseCase) {
-    self.useCase = useCase
+  init(getGamesUseCase: GetGamesUseCase) {
+    self.getGamesUseCase = getGamesUseCase
     setupSearchBinding()
   }
   
@@ -50,7 +50,7 @@ class HomePresenter: ObservableObject {
     isLoading = true
     defer { isLoading = false }
     
-    useCase.getGames()
+    getGamesUseCase.execute()
       .receive(on: RunLoop.main)
       .sink { [weak self] completion in
         guard let self else { return }

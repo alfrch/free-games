@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol GetGamesUseCase {
-  func getGames() -> AnyPublisher<[GameModel], Error>
+  func execute() -> AnyPublisher<[GameModel], Error>
 }
 
 final class GetGamesInteractor: GetGamesUseCase {
@@ -20,7 +20,7 @@ final class GetGamesInteractor: GetGamesUseCase {
     self.repository = repository
   }
   
-  func getGames() -> AnyPublisher<[GameModel], Error> {
+  func execute() -> AnyPublisher<[GameModel], Error> {
     return repository.getGames()
   }
 }
