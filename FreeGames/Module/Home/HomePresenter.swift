@@ -19,12 +19,14 @@ class HomePresenter: ObservableObject {
   
   private let router = HomeRouter()
   private let getGamesUseCase: GetGamesUseCase
+  private let searchUseCase: SearchGamesUseCase
   
   private var allGames: [GameModel] = []
   private var cancellables = Set<AnyCancellable>()
   
-  init(getGamesUseCase: GetGamesUseCase) {
+  init(getGamesUseCase: GetGamesUseCase, searchUseCase: SearchGamesUseCase) {
     self.getGamesUseCase = getGamesUseCase
+    self.searchUseCase = searchUseCase
     setupSearchBinding()
   }
   
@@ -32,18 +34,24 @@ class HomePresenter: ObservableObject {
     $searchText
       .debounce(for: .milliseconds(350), scheduler: RunLoop.main)
       .removeDuplicates()
-      .sink { [weak self] keyword in
-        guard let self else { return }
+      .map { [weak self] keyword -> AnyPublisher<[GameModel], Never> in
+        guard let self = self else {
+          return Just([])
+            .eraseToAnyPublisher()
+        }
         
         if keyword.isEmpty {
-          self.games = self.allGames
-        } else {
-          self.games = self.allGames.filter {
-            $0.title.localizedCaseInsensitiveContains(keyword)
-          }
+          return Just(self.allGames)
+            .eraseToAnyPublisher()
         }
+        
+        return self.searchUseCase.execute(query: keyword)
+          .replaceError(with: [])
+          .eraseToAnyPublisher()
       }
-      .store(in: &cancellables)
+      .switchToLatest()
+      .receive(on: RunLoop.main)
+      .assign(to: &$games)
   }
   
   private func getGames() {

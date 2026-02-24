@@ -13,6 +13,7 @@ protocol GameRepositoryProtocol {
   func getGame(by id: String) -> AnyPublisher<GameModel, Error>
   func getFavoriteGames() -> AnyPublisher<[GameModel], Error>
   func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, Error>
+  func searchGames(with text: String) -> AnyPublisher<[GameModel], Error>
 }
 
 final class GameRepository: GameRepositoryProtocol {
@@ -63,6 +64,12 @@ final class GameRepository: GameRepositoryProtocol {
   func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, Error> {
     return self.local.updateFavoriteGame(by: gameId)
       .map { GameMapper.mapGameEntityToDomain(input: $0) }
+      .eraseToAnyPublisher()
+  }
+  
+  func searchGames(with text: String) -> AnyPublisher<[GameModel], Error> {
+    return self.local.searchGames(with: text)
+      .map { GameMapper.mapGameEntitiesToDomains(input: $0) }
       .eraseToAnyPublisher()
   }
 }

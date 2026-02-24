@@ -42,4 +42,9 @@ final class Injection {
     let repository = provideRepository()
     return UpdateFavoriteGameInteractor(repository: repository, game: game)
   }
+  
+  func provideSearch() -> SearchGamesUseCase {
+    let repository = provideRepository()
+    return SearchGamesInteractor(repository: repository)
+  }
 }

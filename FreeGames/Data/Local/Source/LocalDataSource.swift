@@ -15,6 +15,7 @@ protocol LocalDataSourceProtocol: AnyObject {
   func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error>
   func getFavoriteGames() -> AnyPublisher<[GameEntity], Error>
   func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameEntity, Error>
+  func searchGames(with text: String) -> AnyPublisher<[GameEntity], Error>
 }
 
 final class LocalDataSource: LocalDataSourceProtocol {
@@ -127,6 +128,23 @@ final class LocalDataSource: LocalDataSourceProtocol {
         completion(.success(gameEntity))
       } catch {
         completion(.failure(DatabaseError.requestFailed))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  func searchGames(with text: String) -> AnyPublisher<[GameEntity], Error> {
+    Future<[GameEntity], Error> { [weak self] completion in
+      guard let self else { return }
+      if let realm = self.realm {
+        let gameEntities = {
+          realm.objects(GameEntity.self)
+            .filter("title contains[c] %@", text)
+            .sorted(byKeyPath: "title", ascending: true)
+        }()
+        completion(.success(gameEntities.toArray(ofType: GameEntity.self)))
+      } else {
+        completion(.failure(DatabaseError.invalidInstance))
       }
     }
     .eraseToAnyPublisher()
