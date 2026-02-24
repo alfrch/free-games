@@ -19,6 +19,9 @@ struct DetailView: View {
         contentView
       }
     }
+    .onAppear {
+      self.presenter.getGameDetail()
+    }
     .navigationTitle("Detail")
     .navigationBarTitleDisplayMode(.inline)
     .toolbar(.hidden, for: .tabBar)

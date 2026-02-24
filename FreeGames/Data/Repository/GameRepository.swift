@@ -10,6 +10,7 @@ import Combine
 
 protocol GameRepositoryProtocol {
   func getGames() -> AnyPublisher<[GameModel], Error>
+  func getGame(by id: String) -> AnyPublisher<GameModel, Error>
   func getFavoriteGames() -> AnyPublisher<[GameModel], Error>
   func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameModel, Error>
 }
@@ -44,6 +45,12 @@ final class GameRepository: GameRepositoryProtocol {
             .eraseToAnyPublisher()
         }
       }
+      .eraseToAnyPublisher()
+  }
+  
+  func getGame(by id: String) -> AnyPublisher<GameModel, Error> {
+    return self.local.getGame(by: id)
+      .map { GameMapper.mapGameEntityToDomain(input: $0) }
       .eraseToAnyPublisher()
   }
   

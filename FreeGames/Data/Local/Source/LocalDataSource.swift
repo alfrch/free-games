@@ -11,6 +11,7 @@ import RealmSwift
 
 protocol LocalDataSourceProtocol: AnyObject {
   func getGames() -> AnyPublisher<[GameEntity], Error>
+  func getGame(by id: String) -> AnyPublisher<GameEntity, Error>
   func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error>
   func getFavoriteGames() -> AnyPublisher<[GameEntity], Error>
   func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameEntity, Error>
@@ -37,6 +38,28 @@ final class LocalDataSource: LocalDataSourceProtocol {
             .sorted(by: \.title)
         }()
         completion(.success(gameEntities.toArray(ofType: GameEntity.self)))
+      } else {
+        completion(.failure(DatabaseError.invalidInstance))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
+  
+  
+  func getGame(by id: String) -> AnyPublisher<GameEntity, Error> {
+    Future<GameEntity, Error> { completion in
+      if let realm = self.realm {
+        let games: Results<GameEntity> = {
+          realm.objects(GameEntity.self)
+            .filter("id = '\(id)'")
+        }()
+        
+        guard let game = games.first else {
+          completion(.failure(DatabaseError.requestFailed))
+          return
+        }
+        
+        completion(.success(game))
       } else {
         completion(.failure(DatabaseError.invalidInstance))
       }

@@ -24,6 +24,25 @@ final class DetailPresenter: ObservableObject {
     game = detailUseCase.getGame()
   }
   
+  func getGameDetail() {
+    isLoading = true
+    defer { isLoading = false }
+    detailUseCase.getGame()
+      .receive(on: RunLoop.main)
+      .sink(receiveCompletion: { [weak self] completion in
+        guard let self else { return }
+        switch completion {
+        case .finished: break
+        case .failure(let error):
+          self.errorMessage = error.localizedDescription
+        }
+      }, receiveValue: { [weak self] game in
+        guard let self else { return }
+        self.game = game
+      })
+      .store(in: &cancellables)
+  }
+  
   func updateFavoriteGame() {
     isLoading = true
     detailUseCase.updateFavoriteGame()

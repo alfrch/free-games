@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 protocol DetailUseCase {
+  func getGame() -> AnyPublisher<GameModel, Error>
   func getGame() -> GameModel
   func updateFavoriteGame() -> AnyPublisher<GameModel, Error>
 }
@@ -21,6 +22,10 @@ final class DetailInteractor: DetailUseCase {
   init(repository: GameRepositoryProtocol, game: GameModel) {
     self.repository = repository
     self.game = game
+  }
+  
+  func getGame() -> AnyPublisher<GameModel, Error> {
+    return repository.getGame(by: "\(game.id)")
   }
   
   func getGame() -> GameModel {
