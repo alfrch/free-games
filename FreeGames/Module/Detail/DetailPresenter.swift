@@ -11,23 +11,24 @@ import Combine
 @MainActor
 final class DetailPresenter: ObservableObject {
   
-  @Published var game: GameModel
+  @Published var game: GameModel?
   @Published var isFavorite = false
   @Published var isLoading = false
   @Published var errorMessage: String?
   
-  private let detailUseCase: DetailUseCase
+  private let getDetailUseCase: GetGameDetailUsecase
+  private let updateFavoriteUseCase: UpdateFavoriteGameUseCase
   private var cancellables = Set<AnyCancellable>()
   
-  init(detailUseCase: DetailUseCase) {
-    self.detailUseCase = detailUseCase
-    game = detailUseCase.getGame()
+  init(getDetailUseCase: GetGameDetailUsecase, updateFavoriteUseCase: UpdateFavoriteGameUseCase) {
+    self.getDetailUseCase = getDetailUseCase
+    self.updateFavoriteUseCase = updateFavoriteUseCase
   }
   
   func getGameDetail() {
     isLoading = true
     defer { isLoading = false }
-    detailUseCase.getGame()
+    getDetailUseCase.execute()
       .receive(on: RunLoop.main)
       .sink(receiveCompletion: { [weak self] completion in
         guard let self else { return }
@@ -45,7 +46,7 @@ final class DetailPresenter: ObservableObject {
   
   func updateFavoriteGame() {
     isLoading = true
-    detailUseCase.updateFavoriteGame()
+    updateFavoriteUseCase.execute()
       .receive(on: RunLoop.main)
       .sink(receiveCompletion: { [weak self] completion in
         guard let self else { return }

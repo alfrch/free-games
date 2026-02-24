@@ -33,8 +33,13 @@ final class Injection {
     return FavoriteInteractor(repository: repository)
   }
   
-  func provideDetail(game: GameModel) -> DetailUseCase {
+  func provideDetail(game: GameModel) -> GetGameDetailUsecase {
     let repository = provideRepository()
-    return DetailInteractor(repository: repository, game: game)
+    return GetGameDetailInteractor(repository: repository, game: game)
+  }
+  
+  func provideUpdateFavorite(game: GameModel) -> UpdateFavoriteGameUseCase {
+    let repository = provideRepository()
+    return UpdateFavoriteGameInteractor(repository: repository, game: game)
   }
 }
