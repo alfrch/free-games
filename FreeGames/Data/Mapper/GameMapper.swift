@@ -34,7 +34,6 @@ final class GameMapper {
       gameEntity.desc = result.description ?? "No description available"
       gameEntity.type = result.type ?? "Unknown"
       
-      
       let platformArray = result.platforms?.components(separatedBy: ", ") ?? []
       gameEntity.platforms.removeAll()
       gameEntity.platforms.append(objectsIn: platformArray)

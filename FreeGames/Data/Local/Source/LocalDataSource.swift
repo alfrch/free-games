@@ -46,7 +46,6 @@ final class LocalDataSource: LocalDataSourceProtocol {
     .eraseToAnyPublisher()
   }
   
-  
   func getGame(by id: String) -> AnyPublisher<GameEntity, Error> {
     Future<GameEntity, Error> { completion in
       if let realm = self.realm {
