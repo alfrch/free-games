@@ -11,28 +11,9 @@ import Combine
 
 final class MockRemoteDataSource: RemoteDataSourceProtocol {
   
-  var result: Result<[GameResponse], Error> = .success([])
-  var isGetGamesCalled = false
-  
-  private let subject = PassthroughSubject<[GameResponse], Error>()
-  var useSubject = false
+  var getGamesResult: Result<[GameResponse], Error> = .success([])
   
   func getGames() -> AnyPublisher<[GameResponse], Error> {
-    isGetGamesCalled = true
-    
-    if useSubject {
-      return subject.eraseToAnyPublisher()
-    }
-    
-    switch result {
-    case .success(let games):
-      return Just(games)
-        .setFailureType(to: Error.self)
-        .eraseToAnyPublisher()
-      
-    case .failure(let error):
-      return Fail(error: error)
-        .eraseToAnyPublisher()
-    }
+    getGamesResult.publisher.eraseToAnyPublisher()
   }
 }

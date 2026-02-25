@@ -11,37 +11,34 @@ import Combine
 
 final class MockLocalDataSource: LocalDataSourceProtocol {
   
-  private let subject: CurrentValueSubject<Set<Int>, Never>
+  var getGamesResult: Result<[GameEntity], Error> = .success([])
+  var getGameResult: Result<GameEntity, Error> = .failure(DatabaseError.requestFailed)
+  var saveGamesResult: Result<[GameEntity], Error> = .success([])
+  var getFavoriteGamesResult: Result<[GameEntity], Error> = .success([])
+  var updateFavoriteGameResult: Result<GameEntity, Error> = .failure(DatabaseError.requestFailed)
+  var searchGamesResult: Result<[GameEntity], Error> = .success([])
   
-  var mockIds: Set<Int> {
-    get { subject.value }
-    set { subject.value = newValue }
-  }
-  var toggleCalledWithId: Int?
-  
-  init(initialIds: Set<Int> = []) {
-    subject = CurrentValueSubject(initialIds)
-  }
-  
-  func getFavoritedIds() -> AnyPublisher<Set<Int>, Never> {
-    subject.eraseToAnyPublisher()
+  func getGames() -> AnyPublisher<[GameEntity], Error> {
+    getGamesResult.publisher.eraseToAnyPublisher()
   }
   
-  func getFavoritedIds() -> Set<Int> {
-    return mockIds
+  func getGame(by id: String) -> AnyPublisher<GameEntity, Error> {
+    getGameResult.publisher.eraseToAnyPublisher()
   }
   
-  func toggleFavorite(id: Int) {
-    toggleCalledWithId = id
-    
-    var current = subject.value
-    
-    if current.contains(id) {
-      current.remove(id)
-    } else {
-      current.insert(id)
-    }
-    
-    subject.send(current)
+  func saveGames(_ games: [GameEntity]) -> AnyPublisher<[GameEntity], Error> {
+    saveGamesResult.publisher.eraseToAnyPublisher()
+  }
+  
+  func getFavoriteGames() -> AnyPublisher<[GameEntity], Error> {
+    getFavoriteGamesResult.publisher.eraseToAnyPublisher()
+  }
+  
+  func updateFavoriteGame(by gameId: String) -> AnyPublisher<GameEntity, Error> {
+    updateFavoriteGameResult.publisher.eraseToAnyPublisher()
+  }
+  
+  func searchGames(with text: String) -> AnyPublisher<[GameEntity], Error> {
+    searchGamesResult.publisher.eraseToAnyPublisher()
   }
 }
