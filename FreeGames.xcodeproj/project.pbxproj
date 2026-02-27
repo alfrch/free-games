@@ -10,6 +10,8 @@
 		EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A45D2F1B2F2600A42D68 /* Alamofire */; };
 		EE47A4FB2F1B99D200A42D68 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */; };
 		EEC2D0A82F49709F00788279 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EEC2D0A72F49709F00788279 /* RealmSwift */; };
+		EEC2D0BC2F4EC85300788279 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = EEC2D0BB2F4EC85300788279 /* Core */; };
+		EEC2D0BF2F4EE45100788279 /* Game in Frameworks */ = {isa = PBXBuildFile; productRef = EEC2D0BE2F4EE45100788279 /* Game */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +67,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEC2D0BF2F4EE45100788279 /* Game in Frameworks */,
 				EEC2D0A82F49709F00788279 /* RealmSwift in Frameworks */,
+				EEC2D0BC2F4EC85300788279 /* Core in Frameworks */,
 				EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */,
 				EE47A4FB2F1B99D200A42D68 /* CachedAsyncImage in Frameworks */,
 			);
@@ -139,6 +143,8 @@
 				EE47A45D2F1B2F2600A42D68 /* Alamofire */,
 				EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */,
 				EEC2D0A72F49709F00788279 /* RealmSwift */,
+				EEC2D0BB2F4EC85300788279 /* Core */,
+				EEC2D0BE2F4EE45100788279 /* Game */,
 			);
 			productName = FreeGames;
 			productReference = EEF265C52F19EA33006AE6B1 /* FreeGames.app */;
@@ -177,6 +183,8 @@
 				EE47A45C2F1B2F2600A42D68 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				EE47A4F92F1B99D200A42D68 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				EEC2D0BA2F4EC85300788279 /* XCLocalSwiftPackageReference "../FreeGames-Modules/Core" */,
+				EEC2D0BD2F4EE45100788279 /* XCLocalSwiftPackageReference "../FreeGames-Modules/Game" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EEF265C62F19EA33006AE6B1 /* Products */;
@@ -522,6 +530,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		EEC2D0BA2F4EC85300788279 /* XCLocalSwiftPackageReference "../FreeGames-Modules/Core" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../FreeGames-Modules/Core";
+		};
+		EEC2D0BD2F4EE45100788279 /* XCLocalSwiftPackageReference "../FreeGames-Modules/Game" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../FreeGames-Modules/Game";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		EE47A45C2F1B2F2600A42D68 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -564,6 +583,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		EEC2D0BB2F4EC85300788279 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		EEC2D0BE2F4EE45100788279 /* Game */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Game;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
