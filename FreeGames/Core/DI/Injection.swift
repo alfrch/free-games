@@ -16,7 +16,7 @@ final class Injection {
   
   func provideGames() -> Interactor<
     Any,
-    [GameDomainModel],
+    [GameModel],
     GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>
   > {
     let local = GetGamesLocalDataSource(realm: realm!)

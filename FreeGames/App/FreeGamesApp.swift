@@ -13,7 +13,7 @@ let injection = Injection()
 
 let gameUseCase: Interactor<
   Any,
-  [GameDomainModel],
+  [GameModel],
   GetGamesRepository<
     GetGamesLocalDataSource,
     GetGamesRemoteDataSource,

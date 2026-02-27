@@ -10,7 +10,7 @@ import CachedAsyncImage
 import Game
 
 struct GameCard: View {
-  let game: GameDomainModel
+  let game: GameModel
   
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -59,7 +59,7 @@ struct GameCard: View {
 }
 
 #Preview {
-  let game = GameDomainModel(
+  let game = GameModel(
     id: 3458,
     title: "The Elder Scrolls Online: Experience Scroll Key Giveaway",
     price: "$4.99",

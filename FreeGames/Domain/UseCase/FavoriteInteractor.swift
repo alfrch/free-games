@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Game
 
 protocol FavoriteUseCase {
   func getFavoriteGames() -> AnyPublisher<[GameModel], Error>

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Game
 
 protocol GameRepositoryProtocol {
   func getGames() -> AnyPublisher<[GameModel], Error>

@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import Game
 
 final class GameMapper {
   static func mapGameResponsesToDomains(input responses: [GameResponse]) -> [GameModel] {

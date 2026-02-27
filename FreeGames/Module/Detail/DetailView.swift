@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CachedAsyncImage
+import Game
 
 struct DetailView: View {
   @StateObject var presenter: DetailPresenter

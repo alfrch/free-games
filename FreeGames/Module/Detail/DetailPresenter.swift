@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Game
 
 @MainActor
 final class DetailPresenter: ObservableObject {

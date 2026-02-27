@@ -10,7 +10,7 @@ import Core
 import Game
 
 struct HomeView: View {
-  @ObservedObject var presenter: GetListPresenter<Any, GameDomainModel, Interactor<Any, [GameDomainModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
+  @ObservedObject var presenter: GetListPresenter<Any, GameModel, Interactor<Any, [GameModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
   
   var body: some View {
     ScrollView {
@@ -56,11 +56,11 @@ extension HomeView {
   }
   
   func linkBuilder<Content: View>(
-    for game: GameDomainModel,
+    for game: GameModel,
     @ViewBuilder content: () -> Content
   ) -> some View {
     NavigationLink(
-      destination: EmptyView(),
+      destination: HomeRouter().makeDetailView(for: game),
     ) { content() }
   }
   

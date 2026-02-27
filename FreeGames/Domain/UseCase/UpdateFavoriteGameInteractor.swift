@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Game
 
 protocol UpdateFavoriteGameUseCase {
   func execute() -> AnyPublisher<GameModel, Error>

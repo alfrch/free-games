@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Game
 
 class HomeRouter {
   

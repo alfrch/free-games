@@ -40,7 +40,7 @@ struct FavoriteView: View {
   var gameList: some View {
     ForEach(presenter.games) { game in
       self.presenter.linkBuilder(for: game) {
-//        GameCard(game: game)
+        GameCard(game: game)
       }
       .buttonStyle(.plain)
     }

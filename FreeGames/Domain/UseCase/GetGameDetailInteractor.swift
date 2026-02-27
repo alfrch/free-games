@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Game
 
 protocol GetGameDetailUsecase {
   func execute() -> AnyPublisher<GameModel, Error>

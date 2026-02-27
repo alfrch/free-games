@@ -10,7 +10,7 @@ import Core
 import Game
 
 struct ContentView: View {
-  @EnvironmentObject var homePresenter: GetListPresenter<Any, GameDomainModel, Interactor<Any, [GameDomainModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
+  @EnvironmentObject var homePresenter: GetListPresenter<Any, GameModel, Interactor<Any, [GameModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
   
   var body: some View {
     TabView {
