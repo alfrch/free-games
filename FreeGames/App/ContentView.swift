@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import Core
+import Game
 
 struct ContentView: View {
+  @EnvironmentObject var homePresenter: GetListPresenter<Any, GameDomainModel, Interactor<Any, [GameDomainModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
+  
   var body: some View {
     TabView {
       NavigationStack {
-        HomeView()
+        HomeView(presenter: homePresenter)
       }
       .tabItem {
         Label("Home", systemImage: "house.fill")

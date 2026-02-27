@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Core
+import Game
 
 struct HomeView: View {
-  @EnvironmentObject var presenter: HomePresenter
+  @ObservedObject var presenter: GetListPresenter<Any, GameDomainModel, Interactor<Any, [GameDomainModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
   
   var body: some View {
     ScrollView {
@@ -23,16 +25,20 @@ struct HomeView: View {
       .frame(maxWidth: .infinity, alignment: .center)
       .padding(.horizontal, 16)
     }
-    .searchable(
-      text: $presenter.searchText,
-      placement: .navigationBarDrawer(displayMode: .always),
-      prompt: "Search games..."
-    )
+//    .searchable(
+//      text: presenter.searchText,
+//      placement: .navigationBarDrawer(displayMode: .always),
+//      prompt: "Search games..."
+//    )
     .onAppear {
-      presenter.loadIfNeeded()
+      if self.presenter.list.isEmpty {
+        self.presenter.getList(request: nil)
+      }
     }
   }
-  
+}
+
+extension HomeView {
   var headerView: some View {
     HeaderView(
       title: "Free Games",
@@ -41,15 +47,21 @@ struct HomeView: View {
   }
   
   var gameList: some View {
-    ForEach(presenter.games) { game in
-      self.presenter.linkBuilder(for: game) {
+    ForEach(presenter.list, id: \.id) { game in
+      linkBuilder(for: game) {
         GameCard(game: game)
       }
       .buttonStyle(.plain)
     }
   }
-}
-
-#Preview {
-  HomeView()
+  
+  func linkBuilder<Content: View>(
+    for game: GameDomainModel,
+    @ViewBuilder content: () -> Content
+  ) -> some View {
+    NavigationLink(
+      destination: EmptyView(),
+    ) { content() }
+  }
+  
 }

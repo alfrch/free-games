@@ -6,12 +6,25 @@
 //
 
 import SwiftUI
+import Core
+import Game
+
+let injection = Injection()
+
+let gameUseCase: Interactor<
+  Any,
+  [GameDomainModel],
+  GetGamesRepository<
+    GetGamesLocalDataSource,
+    GetGamesRemoteDataSource,
+    GameTransformer>
+> = injection.provideGames()
 
 @main
-struct FreeGamesApp: App {
-  @StateObject var homePresenter = HomePresenter(getGamesUseCase: Injection().provideGames(), searchUseCase: Injection().provideSearch())
-  @StateObject var favoritePresenter = FavoritePresenter(useCase: Injection().provideFavorite())
-  @StateObject var aboutPresenter = AboutPresenter()
+struct FreeGamesApp: SwiftUI.App {
+  let homePresenter = GetListPresenter(useCase: gameUseCase)
+  let favoritePresenter = FavoritePresenter(useCase: Injection().provideFavorite())
+  let aboutPresenter = AboutPresenter()
   
   var body: some Scene {
     WindowGroup {

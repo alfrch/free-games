@@ -7,9 +7,10 @@
 
 import SwiftUI
 import CachedAsyncImage
+import Game
 
 struct GameCard: View {
-  let game: GameModel
+  let game: GameDomainModel
   
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -58,7 +59,7 @@ struct GameCard: View {
 }
 
 #Preview {
-  let game = GameModel(
+  let game = GameDomainModel(
     id: 3458,
     title: "The Elder Scrolls Online: Experience Scroll Key Giveaway",
     price: "$4.99",
@@ -66,7 +67,8 @@ struct GameCard: View {
     description: "Dumb Ways to Die is free this week on the Epic Games Store App for iPhone, iPad, and Android.",
     type: "Game",
     platforms: ["PC", "Playstation 4", "Xbox One", "Nintendo Switch", "Android", "iOS"],
-    url: "https://www.gamerpower.com/dumb-ways-to-die-mobile-giveaway"
+    url: "https://www.gamerpower.com/dumb-ways-to-die-mobile-giveaway",
+    favorite: false
   )
   GameCard(game: game)
 }
