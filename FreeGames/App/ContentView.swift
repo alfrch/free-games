@@ -11,6 +11,7 @@ import Game
 
 struct ContentView: View {
   @EnvironmentObject var homePresenter: GetListPresenter<Any, GameModel, Interactor<Any, [GameModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
+  @EnvironmentObject var favoritePresenter: FavoritePresenter
   
   var body: some View {
     TabView {
@@ -22,7 +23,7 @@ struct ContentView: View {
       }
       
       NavigationStack {
-        FavoriteView()
+        FavoriteView(presenter: favoritePresenter)
       }
       .tabItem {
         Label("Favorite", systemImage: "heart.fill")

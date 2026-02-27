@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FavoriteView: View {
-  @EnvironmentObject var presenter: FavoritePresenter
+  @ObservedObject var presenter: FavoritePresenter
   
   var body: some View {
     ScrollView {
@@ -66,6 +66,6 @@ struct FavoriteView: View {
   }
 }
 
-#Preview {
-  FavoriteView()
-}
+//#Preview {
+//  FavoriteView()
+//}
