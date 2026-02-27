@@ -10,7 +10,19 @@ import Core
 import Game
 
 struct HomeView: View {
-  @ObservedObject var presenter: GetListPresenter<Any, GameModel, Interactor<Any, [GameModel], GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>>>
+  @ObservedObject var presenter: GetListPresenter<
+    Any,
+    GameModel,
+    Interactor<
+      Any,
+      [GameModel],
+      GetGamesRepository<
+        GetGamesLocalDataSource,
+        GetGamesRemoteDataSource,
+        GameTransformer
+      >
+    >
+  >
   
   var body: some View {
     ScrollView {

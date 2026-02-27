@@ -65,7 +65,3 @@ struct FavoriteView: View {
     .padding(.vertical, 100)
   }
 }
-
-//#Preview {
-//  FavoriteView()
-//}
