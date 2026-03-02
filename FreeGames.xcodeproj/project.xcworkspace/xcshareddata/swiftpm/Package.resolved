@@ -1,5 +1,5 @@
 {
-  "originHash" : "f932639adb6c90a72ca86cff59c114061e8af191e02fa72043a818606835c498",
+  "originHash" : "4f49ea76c3422b6f8bfc6a1655ad0fc330e979bc0d7551704867d275004e7c03",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "7be73f6c2b5cd90e40798b06ebd5da8f9f79cf88",
         "version" : "5.11.0"
+      }
+    },
+    {
+      "identity" : "free-games-core-package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alfrch/free-games-core-package.git",
+      "state" : {
+        "revision" : "e005511bb2fa35d18ababb38f466a15bd53b285d",
+        "version" : "1.0.1"
       }
     },
     {
