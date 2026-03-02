@@ -25,7 +25,6 @@ struct DetailView: View {
     }
     .navigationTitle("Detail")
     .navigationBarTitleDisplayMode(.inline)
-    .toolbar(.hidden, for: .tabBar)
     .toolbar {
       Button {
         presenter.updateFavoriteGame()
