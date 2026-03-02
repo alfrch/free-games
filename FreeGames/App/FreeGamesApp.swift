@@ -17,7 +17,7 @@ let gameUseCase: Interactor<
   GetGamesRepository<
     GetGamesLocalDataSource,
     GetGamesRemoteDataSource,
-    GameTransformer>
+    GamesTransformer>
 > = injection.provideGames()
 
 let favoriteUseCase: Interactor<
@@ -25,7 +25,7 @@ let favoriteUseCase: Interactor<
   [GameModel],
   GetFavoriteGamesRepository<
     GetFavoriteGamesLocalDataSource,
-    GameTransformer
+    GamesTransformer
   >
 > = injection.provideFavorite()
 

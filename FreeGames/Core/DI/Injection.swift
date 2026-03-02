@@ -17,11 +17,11 @@ final class Injection {
   func provideGames() -> Interactor<
     Any,
     [GameModel],
-    GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GameTransformer>
+    GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GamesTransformer>
   > {
     let local = GetGamesLocalDataSource(realm: realm!)
     let remote = GetGamesRemoteDataSource(endpoint: Endpoints.Gets.giveaways.url)
-    let mapper = GameTransformer()
+    let mapper = GamesTransformer()
     
     let repository = GetGamesRepository(
       localDataSource: local,
@@ -31,13 +31,28 @@ final class Injection {
     return Interactor(repository: repository)
   }
   
+  func provideGame() -> Interactor<
+    Any,
+    GameModel,
+    GetGameRepository<GetGameLocalDataSource, GameTransformer>
+  > {
+    let local = GetGameLocalDataSource(realm: realm!)
+    let mapper = GameTransformer()
+    
+    let repository = GetGameRepository(
+      localDataSource: local,
+      mapper: mapper
+    )
+    return Interactor(repository: repository)
+  }
+  
   func provideFavorite() -> Interactor<
     Any,
     [GameModel],
-    GetFavoriteGamesRepository<GetFavoriteGamesLocalDataSource, GameTransformer>
+    GetFavoriteGamesRepository<GetFavoriteGamesLocalDataSource, GamesTransformer>
   > {
     let local = GetFavoriteGamesLocalDataSource(realm: realm)
-    let mapper = GameTransformer()
+    let mapper = GamesTransformer()
     
     let repository = GetFavoriteGamesRepository(
       localDatasource: local,

@@ -19,7 +19,7 @@ struct ContentView: View {
       GetGamesRepository<
         GetGamesLocalDataSource,
         GetGamesRemoteDataSource,
-        GameTransformer
+        GamesTransformer
       >
     >
   >
@@ -31,7 +31,7 @@ struct ContentView: View {
       [GameModel],
       GetFavoriteGamesRepository<
         GetFavoriteGamesLocalDataSource,
-        GameTransformer
+        GamesTransformer
       >
     >
   >

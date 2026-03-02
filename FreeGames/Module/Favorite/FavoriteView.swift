@@ -18,7 +18,7 @@ struct FavoriteView: View {
       [GameModel],
       GetFavoriteGamesRepository<
         GetFavoriteGamesLocalDataSource,
-        GameTransformer
+        GamesTransformer
       >
     >
   >

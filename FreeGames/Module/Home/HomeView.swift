@@ -19,7 +19,7 @@ struct HomeView: View {
       GetGamesRepository<
         GetGamesLocalDataSource,
         GetGamesRemoteDataSource,
-        GameTransformer
+        GamesTransformer
       >
     >
   >

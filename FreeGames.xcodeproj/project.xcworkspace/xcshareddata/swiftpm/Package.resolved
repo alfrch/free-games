@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfrch/free-games-game-package.git",
       "state" : {
-        "revision" : "48adac164e1b85c450b7c81486cb3648c56af144",
-        "version" : "1.0.2"
+        "revision" : "963a8f965fe46daffceea4d590b87442e6f2ac25",
+        "version" : "1.0.5"
       }
     },
     {

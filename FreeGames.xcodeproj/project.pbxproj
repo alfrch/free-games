@@ -560,7 +560,7 @@
 			repositoryURL = "https://github.com/alfrch/free-games-game-package.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.2;
+				minimumVersion = 1.0.5;
 			};
 		};
 		EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
