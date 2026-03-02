@@ -23,7 +23,18 @@ struct ContentView: View {
       >
     >
   >
-  @EnvironmentObject var favoritePresenter: FavoritePresenter
+  @EnvironmentObject var favoritePresenter: GetListPresenter<
+    Any,
+    GameModel,
+    Interactor<
+      Any,
+      [GameModel],
+      GetFavoriteGamesRepository<
+        GetFavoriteGamesLocalDataSource,
+        GameTransformer
+      >
+    >
+  >
   
   var body: some View {
     TabView {

@@ -6,9 +6,22 @@
 //
 
 import SwiftUI
+import Game
+import Core
 
 struct FavoriteView: View {
-  @ObservedObject var presenter: FavoritePresenter
+  @ObservedObject var presenter: GetListPresenter<
+    Any,
+    GameModel,
+    Interactor<
+      Any,
+      [GameModel],
+      GetFavoriteGamesRepository<
+        GetFavoriteGamesLocalDataSource,
+        GameTransformer
+      >
+    >
+  >
   
   var body: some View {
     ScrollView {
@@ -16,7 +29,7 @@ struct FavoriteView: View {
         headerView
         if presenter.isLoading {
           ProgressView()
-        } else if presenter.games.isEmpty {
+        } else if presenter.list.count == 0 {
           emptyView
         } else {
           gameList
@@ -26,24 +39,17 @@ struct FavoriteView: View {
       .padding(.horizontal, 16)
     }
     .onAppear {
-      presenter.getGames()
+      presenter.getList(request: nil)
     }
   }
-  
+}
+
+extension FavoriteView {
   var headerView: some View {
     HeaderView(
       title: "Favorites",
       subtitle: "Your favorite game collection"
     )
-  }
-  
-  var gameList: some View {
-    ForEach(presenter.games) { game in
-      self.presenter.linkBuilder(for: game) {
-        GameCard(game: game)
-      }
-      .buttonStyle(.plain)
-    }
   }
   
   var emptyView: some View {
@@ -63,5 +69,23 @@ struct FavoriteView: View {
     }
     .frame(maxWidth: .infinity, alignment: .center)
     .padding(.vertical, 100)
+  }
+  
+  var gameList: some View {
+    ForEach(presenter.list, id: \.id) { game in
+      linkBuilder(for: game) {
+        GameCard(game: game)
+      }
+      .buttonStyle(.plain)
+    }
+  }
+  
+  func linkBuilder<Content: View>(
+    for game: GameModel,
+    @ViewBuilder content: () -> Content
+  ) -> some View {
+    NavigationLink(
+      destination: HomeRouter().makeDetailView(for: game),
+    ) { content() }
   }
 }

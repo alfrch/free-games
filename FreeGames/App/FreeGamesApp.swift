@@ -20,10 +20,19 @@ let gameUseCase: Interactor<
     GameTransformer>
 > = injection.provideGames()
 
+let favoriteUseCase: Interactor<
+  Any,
+  [GameModel],
+  GetFavoriteGamesRepository<
+    GetFavoriteGamesLocalDataSource,
+    GameTransformer
+  >
+> = injection.provideFavorite()
+
 @main
 struct FreeGamesApp: SwiftUI.App {
   let homePresenter = GetListPresenter(useCase: gameUseCase)
-  let favoritePresenter = FavoritePresenter(useCase: Injection().provideFavorite())
+  let favoritePresenter = GetListPresenter(useCase: favoriteUseCase)
   let aboutPresenter = AboutPresenter()
   
   var body: some Scene {
