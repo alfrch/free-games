@@ -10,8 +10,8 @@
 		EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A45D2F1B2F2600A42D68 /* Alamofire */; };
 		EE47A4FB2F1B99D200A42D68 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */; };
 		EE5054AE2F5561670000F830 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = EE5054AD2F5561670000F830 /* Core */; };
+		EE5055142F556C640000F830 /* Game in Frameworks */ = {isa = PBXBuildFile; productRef = EE5055132F556C640000F830 /* Game */; };
 		EEC2D0A82F49709F00788279 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EEC2D0A72F49709F00788279 /* RealmSwift */; };
-		EEC2D0BF2F4EE45100788279 /* Game in Frameworks */ = {isa = PBXBuildFile; productRef = EEC2D0BE2F4EE45100788279 /* Game */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEC2D0BF2F4EE45100788279 /* Game in Frameworks */,
+				EE5055142F556C640000F830 /* Game in Frameworks */,
 				EEC2D0A82F49709F00788279 /* RealmSwift in Frameworks */,
 				EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */,
 				EE5054AE2F5561670000F830 /* Core in Frameworks */,
@@ -143,8 +143,8 @@
 				EE47A45D2F1B2F2600A42D68 /* Alamofire */,
 				EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */,
 				EEC2D0A72F49709F00788279 /* RealmSwift */,
-				EEC2D0BE2F4EE45100788279 /* Game */,
 				EE5054AD2F5561670000F830 /* Core */,
+				EE5055132F556C640000F830 /* Game */,
 			);
 			productName = FreeGames;
 			productReference = EEF265C52F19EA33006AE6B1 /* FreeGames.app */;
@@ -183,8 +183,8 @@
 				EE47A45C2F1B2F2600A42D68 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				EE47A4F92F1B99D200A42D68 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				EEC2D0BD2F4EE45100788279 /* XCLocalSwiftPackageReference "../FreeGames-Modules/Game" */,
 				EE5054AC2F5561670000F830 /* XCRemoteSwiftPackageReference "free-games-core-package" */,
+				EE5055122F556C640000F830 /* XCRemoteSwiftPackageReference "free-games-game-package" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EEF265C62F19EA33006AE6B1 /* Products */;
@@ -530,13 +530,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		EEC2D0BD2F4EE45100788279 /* XCLocalSwiftPackageReference "../FreeGames-Modules/Game" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../FreeGames-Modules/Game";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		EE47A45C2F1B2F2600A42D68 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -560,6 +553,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.1;
+			};
+		};
+		EE5055122F556C640000F830 /* XCRemoteSwiftPackageReference "free-games-game-package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alfrch/free-games-game-package.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
@@ -588,14 +589,15 @@
 			package = EE5054AC2F5561670000F830 /* XCRemoteSwiftPackageReference "free-games-core-package" */;
 			productName = Core;
 		};
+		EE5055132F556C640000F830 /* Game */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE5055122F556C640000F830 /* XCRemoteSwiftPackageReference "free-games-game-package" */;
+			productName = Game;
+		};
 		EEC2D0A72F49709F00788279 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
-		};
-		EEC2D0BE2F4EE45100788279 /* Game */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Game;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
