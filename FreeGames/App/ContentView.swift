@@ -21,6 +21,14 @@ struct ContentView: View {
         GetGamesRemoteDataSource,
         GamesTransformer
       >
+    >,
+    Interactor<
+      String,
+      [GameModel],
+      SearchGamesRepository<
+        SearchGamesLocalDataSource,
+        GamesTransformer
+      >
     >
   >
   @EnvironmentObject var favoritePresenter: GetListPresenter<
@@ -31,6 +39,14 @@ struct ContentView: View {
       [GameModel],
       GetFavoriteGamesRepository<
         GetFavoriteGamesLocalDataSource,
+        GamesTransformer
+      >
+    >,
+    Interactor<
+      String,
+      [GameModel],
+      SearchGamesRepository<
+        SearchGamesLocalDataSource,
         GamesTransformer
       >
     >

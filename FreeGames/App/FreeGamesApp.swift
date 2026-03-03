@@ -29,10 +29,16 @@ let favoriteUseCase: Interactor<
   >
 > = injection.provideFavorite()
 
+let searchUseCase: Interactor<
+  String,
+  [GameModel],
+  SearchGamesRepository<SearchGamesLocalDataSource, GamesTransformer>
+> = injection.provideSearch()
+
 @main
 struct FreeGamesApp: SwiftUI.App {
-  let homePresenter = GetListPresenter(useCase: gameUseCase)
-  let favoritePresenter = GetListPresenter(useCase: favoriteUseCase)
+  let homePresenter = GetListPresenter(gamesUseCase: gameUseCase, searchUseCase: searchUseCase)
+  let favoritePresenter = GetListPresenter(gamesUseCase: favoriteUseCase, searchUseCase: searchUseCase)
   let aboutPresenter = AboutPresenter()
   
   var body: some Scene {

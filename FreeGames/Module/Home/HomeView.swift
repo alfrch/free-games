@@ -21,6 +21,14 @@ struct HomeView: View {
         GetGamesRemoteDataSource,
         GamesTransformer
       >
+    >,
+    Interactor<
+      String,
+      [GameModel],
+      SearchGamesRepository<
+        SearchGamesLocalDataSource,
+        GamesTransformer
+      >
     >
   >
   
@@ -37,11 +45,11 @@ struct HomeView: View {
       .frame(maxWidth: .infinity, alignment: .center)
       .padding(.horizontal, 16)
     }
-//    .searchable(
-//      text: presenter.searchText,
-//      placement: .navigationBarDrawer(displayMode: .always),
-//      prompt: "Search games..."
-//    )
+    .searchable(
+      text: $presenter.searchText,
+      placement: .navigationBarDrawer(displayMode: .always),
+      prompt: "Search games..."
+    )
     .onAppear {
       if self.presenter.list.isEmpty {
         self.presenter.getList(request: nil)

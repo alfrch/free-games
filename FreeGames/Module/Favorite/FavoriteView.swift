@@ -20,6 +20,14 @@ struct FavoriteView: View {
         GetFavoriteGamesLocalDataSource,
         GamesTransformer
       >
+    >,
+    Interactor<
+      String,
+      [GameModel],
+      SearchGamesRepository<
+        SearchGamesLocalDataSource,
+        GamesTransformer
+      >
     >
   >
   

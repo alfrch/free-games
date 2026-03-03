@@ -76,6 +76,21 @@ final class Injection {
     return Interactor(repository: repository)
   }
   
+  func provideSearch() -> Interactor<
+    String,
+    [GameModel],
+    SearchGamesRepository<SearchGamesLocalDataSource, GamesTransformer>
+  > {
+    let local = SearchGamesLocalDataSource(realm: realm!)
+    let mapper = GamesTransformer()
+    
+    let repository = SearchGamesRepository(
+      localDataSource: local,
+      mapper: mapper
+    )
+    return Interactor(repository: repository)
+  }
+  
   private static let sharedRepository: GameRepositoryProtocol = {
     let realm = try? Realm()
     
@@ -85,12 +100,12 @@ final class Injection {
     )
   }()
   
-  private func provideRepository() -> GameRepositoryProtocol {
-    return Self.sharedRepository
-  }
+//  private func provideRepository() -> GameRepositoryProtocol {
+//    return Self.sharedRepository
+//  }
   
-  func provideSearch() -> SearchGamesUseCase {
-    let repository = provideRepository()
-    return SearchGamesInteractor(repository: repository)
-  }
+//  func provideSearch() -> SearchGamesUseCase {
+//    let repository = provideRepository()
+//    return SearchGamesInteractor(repository: repository)
+//  }
 }
