@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfrch/free-games-core-package.git",
       "state" : {
-        "revision" : "e005511bb2fa35d18ababb38f466a15bd53b285d",
-        "version" : "1.0.1"
+        "revision" : "bc123129c55e2f3665fd50eaa7586646fa733054",
+        "version" : "1.0.2"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfrch/free-games-game-package.git",
       "state" : {
-        "revision" : "963a8f965fe46daffceea4d590b87442e6f2ac25",
-        "version" : "1.0.5"
+        "revision" : "da2c50127c64211d5888244d3b253604eeb93c88",
+        "version" : "1.0.9"
       }
     },
     {

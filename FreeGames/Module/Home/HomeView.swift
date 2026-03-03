@@ -11,10 +11,10 @@ import Game
 
 struct HomeView: View {
   @ObservedObject var presenter: GetListPresenter<
-    Any,
+    String,
     GameModel,
     Interactor<
-      Any,
+      String,
       [GameModel],
       GetGamesRepository<
         GetGamesLocalDataSource,

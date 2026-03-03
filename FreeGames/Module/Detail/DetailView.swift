@@ -10,7 +10,7 @@ import CachedAsyncImage
 import Game
 
 struct DetailView: View {
-  @StateObject var presenter: DetailPresenter
+  @ObservedObject var presenter: DetailPresenter
   @State private var showSafari = false
   
   var body: some View {

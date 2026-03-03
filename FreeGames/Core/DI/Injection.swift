@@ -15,7 +15,7 @@ final class Injection {
   private let realm = try? Realm()
   
   func provideGames() -> Interactor<
-    Any,
+    String,
     [GameModel],
     GetGamesRepository<GetGamesLocalDataSource, GetGamesRemoteDataSource, GamesTransformer>
   > {
@@ -32,7 +32,7 @@ final class Injection {
   }
   
   func provideGame() -> Interactor<
-    Any,
+    String,
     GameModel,
     GetGameRepository<GetGameLocalDataSource, GameTransformer>
   > {
@@ -47,7 +47,7 @@ final class Injection {
   }
   
   func provideFavorite() -> Interactor<
-    Any,
+    String,
     [GameModel],
     GetFavoriteGamesRepository<GetFavoriteGamesLocalDataSource, GamesTransformer>
   > {

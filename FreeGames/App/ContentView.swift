@@ -11,10 +11,10 @@ import Game
 
 struct ContentView: View {
   @EnvironmentObject var homePresenter: GetListPresenter<
-    Any,
+    String,
     GameModel,
     Interactor<
-      Any,
+      String,
       [GameModel],
       GetGamesRepository<
         GetGamesLocalDataSource,
@@ -24,10 +24,10 @@ struct ContentView: View {
     >
   >
   @EnvironmentObject var favoritePresenter: GetListPresenter<
-    Any,
+    String,
     GameModel,
     Interactor<
-      Any,
+      String,
       [GameModel],
       GetFavoriteGamesRepository<
         GetFavoriteGamesLocalDataSource,

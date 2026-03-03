@@ -12,7 +12,7 @@ import Game
 let injection = Injection()
 
 let gameUseCase: Interactor<
-  Any,
+  String,
   [GameModel],
   GetGamesRepository<
     GetGamesLocalDataSource,
@@ -21,7 +21,7 @@ let gameUseCase: Interactor<
 > = injection.provideGames()
 
 let favoriteUseCase: Interactor<
-  Any,
+  String,
   [GameModel],
   GetFavoriteGamesRepository<
     GetFavoriteGamesLocalDataSource,

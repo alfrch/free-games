@@ -11,10 +11,10 @@ import Core
 
 struct FavoriteView: View {
   @ObservedObject var presenter: GetListPresenter<
-    Any,
+    String,
     GameModel,
     Interactor<
-      Any,
+      String,
       [GameModel],
       GetFavoriteGamesRepository<
         GetFavoriteGamesLocalDataSource,
