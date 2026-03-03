@@ -34,9 +34,9 @@ final class Injection {
   func provideGame() -> Interactor<
     String,
     GameModel,
-    GetGameRepository<GetGameLocalDataSource, GameTransformer>
+    GetGameRepository<GetGamesLocalDataSource, GameTransformer>
   > {
-    let local = GetGameLocalDataSource(realm: realm!)
+    let local = GetGamesLocalDataSource(realm: realm!)
     let mapper = GameTransformer()
     
     let repository = GetGameRepository(
