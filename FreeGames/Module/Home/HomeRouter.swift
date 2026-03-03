@@ -7,13 +7,24 @@
 
 import SwiftUI
 import Game
+import Core
 
 class HomeRouter {
   
   func makeDetailView(for game: GameModel) -> some View {
-    let getDetailUseCase = Injection().provideDetail(game: game)
-    let updateFavoriteUseCase = Injection().provideUpdateFavorite(game: game)
-    let presenter = DetailPresenter(getDetailUseCase: getDetailUseCase, updateFavoriteUseCase: updateFavoriteUseCase)
-    return DetailView(presenter: presenter)
+    let gameUseCase: Interactor<
+      String,
+      GameModel,
+      GetGameRepository<GetGamesLocalDataSource, GameTransformer>
+    > = Injection().provideGame()
+    
+    let favoriteUseCase: Interactor<
+      String,
+      GameModel,
+      UpdateFavoriteGameRepository<GetFavoriteGamesLocalDataSource, GameTransformer>
+    > = Injection().provideUpdateFavorite()
+    
+    let presenter = GamePresenter(gameUseCase: gameUseCase, favoriteUseCase: favoriteUseCase)
+    return DetailView(presenter: presenter, game: game)
   }
 }

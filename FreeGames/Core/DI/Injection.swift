@@ -61,6 +61,21 @@ final class Injection {
     return Interactor(repository: repository)
   }
   
+  func provideUpdateFavorite() -> Interactor<
+    String,
+    GameModel,
+    UpdateFavoriteGameRepository<GetFavoriteGamesLocalDataSource, GameTransformer>
+  > {
+    let local = GetFavoriteGamesLocalDataSource(realm: realm)
+    let mapper = GameTransformer()
+    
+    let repository = UpdateFavoriteGameRepository(
+      localDataSource: local,
+      mapper: mapper
+    )
+    return Interactor(repository: repository)
+  }
+  
   private static let sharedRepository: GameRepositoryProtocol = {
     let realm = try? Realm()
     

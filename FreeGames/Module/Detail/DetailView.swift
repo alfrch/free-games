@@ -8,10 +8,25 @@
 import SwiftUI
 import CachedAsyncImage
 import Game
+import Core
 
 struct DetailView: View {
-  @ObservedObject var presenter: DetailPresenter
+  @ObservedObject var presenter: GamePresenter<
+    Interactor<
+      String,
+      GameModel,
+      GetGameRepository<GetGamesLocalDataSource, GameTransformer>
+    >,
+    Interactor<
+      String,
+      GameModel,
+      UpdateFavoriteGameRepository<GetFavoriteGamesLocalDataSource, GameTransformer>
+    >
+  >
+      
   @State private var showSafari = false
+  
+  var game: GameModel
   
   var body: some View {
     ScrollView(.vertical) {
@@ -21,20 +36,20 @@ struct DetailView: View {
       }
     }
     .onAppear {
-      self.presenter.getGameDetail()
+      self.presenter.getGame(request: "\(game.id)")
     }
     .navigationTitle("Detail")
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       Button {
-        presenter.updateFavoriteGame()
+        presenter.updateFavoriteGame(request: "\(game.id)")
       } label: {
-        Image(systemName: presenter.game?.favorite ?? false ? "heart.fill" : "heart")
+        Image(systemName: presenter.item?.favorite ?? false ? "heart.fill" : "heart")
           .foregroundStyle(.red)
       }
     }
     .sheet(isPresented: $showSafari) {
-      if let url = URL(string: presenter.game?.url ?? "") {
+      if let url = URL(string: presenter.item?.url ?? "") {
         SafariView(url: url)
           .ignoresSafeArea()
       }
@@ -42,7 +57,7 @@ struct DetailView: View {
   }
   
   var thumbnailImage: some View {
-    CachedAsyncImage(url: URL(string: presenter.game?.thumbnail ?? "")) { image in
+    CachedAsyncImage(url: URL(string: presenter.item?.thumbnail ?? "")) { image in
       image
         .resizable()
         .aspectRatio(contentMode: .fill)
@@ -56,13 +71,13 @@ struct DetailView: View {
   
   var contentView: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(presenter.game?.title ?? "")
+      Text(presenter.item?.title ?? "")
         .font(.largeTitle)
         .bold()
       
       // Platforms
       FlowLayout(spacing: 8) {
-        ForEach(presenter.game?.platforms ?? [], id: \.self) { platform in
+        ForEach(presenter.item?.platforms ?? [], id: \.self) { platform in
           Text(platform)
             .font(.caption)
             .fontWeight(.medium)
@@ -90,7 +105,7 @@ struct DetailView: View {
       Text("Description")
         .font(.headline)
       
-      Text(presenter.game?.description ?? "")
+      Text(presenter.item?.description ?? "")
         .font(.body)
         .foregroundStyle(.secondary)
         .lineSpacing(4)
