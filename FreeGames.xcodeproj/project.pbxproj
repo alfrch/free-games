@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE2667A62F57FF4600B4549C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EE2667A52F57FF4600B4549C /* RealmSwift */; };
+		EE2667A72F57FF4600B4549C /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = EE2667A52F57FF4600B4549C /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		EE47A45E2F1B2F2600A42D68 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A45D2F1B2F2600A42D68 /* Alamofire */; };
 		EE47A4FB2F1B99D200A42D68 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = EE47A4FA2F1B99D200A42D68 /* CachedAsyncImage */; };
 		EE5054AE2F5561670000F830 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = EE5054AD2F5561670000F830 /* Core */; };
@@ -23,6 +25,20 @@
 			remoteInfo = FreeGames;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EE2667A82F57FF4600B4549C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EE2667A72F57FF4600B4549C /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		EEBFAC8A2F27223100C6E2E9 /* FreeGamesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreeGamesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE2667A62F57FF4600B4549C /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,11 +95,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE2667A42F57FF4600B4549C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EEF265BC2F19EA33006AE6B1 = {
 			isa = PBXGroup;
 			children = (
 				EEF265C72F19EA33006AE6B1 /* FreeGames */,
 				EEBFAC8B2F27223100C6E2E9 /* FreeGamesTests */,
+				EE2667A42F57FF4600B4549C /* Frameworks */,
 				EEF265C62F19EA33006AE6B1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,6 +131,7 @@
 				EEBFAC862F27223100C6E2E9 /* Sources */,
 				EEBFAC872F27223100C6E2E9 /* Frameworks */,
 				EEBFAC882F27223100C6E2E9 /* Resources */,
+				EE2667A82F57FF4600B4549C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -117,6 +143,7 @@
 			);
 			name = FreeGamesTests;
 			packageProductDependencies = (
+				EE2667A52F57FF4600B4549C /* RealmSwift */,
 			);
 			productName = FreeGamesTests;
 			productReference = EEBFAC8A2F27223100C6E2E9 /* FreeGamesTests.xctest */;
@@ -574,6 +601,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EE2667A52F57FF4600B4549C /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EEC2D0A62F49709F00788279 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		EE47A45D2F1B2F2600A42D68 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EE47A45C2F1B2F2600A42D68 /* XCRemoteSwiftPackageReference "Alamofire" */;

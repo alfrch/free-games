@@ -12,7 +12,11 @@ import Game
 
 final class Injection {
   
-  private let realm = try? Realm()
+  private let realm: Realm?
+  
+  init(realm: Realm? = try? Realm()) {
+    self.realm = realm
+  }
   
   func provideGames() -> Interactor<
     String,
