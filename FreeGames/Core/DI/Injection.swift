@@ -90,22 +90,4 @@ final class Injection {
     )
     return Interactor(repository: repository)
   }
-  
-  private static let sharedRepository: GameRepositoryProtocol = {
-    let realm = try? Realm()
-    
-    return GameRepository(
-      remote: RemoteDataSource.shared,
-      local: LocalDataSource.shared(realm)
-    )
-  }()
-  
-//  private func provideRepository() -> GameRepositoryProtocol {
-//    return Self.sharedRepository
-//  }
-  
-//  func provideSearch() -> SearchGamesUseCase {
-//    let repository = provideRepository()
-//    return SearchGamesInteractor(repository: repository)
-//  }
 }
