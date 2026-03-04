@@ -10,7 +10,7 @@ import Core
 import Game
 
 struct HomeView: View {
-  @ObservedObject var presenter: GetListPresenter<
+  @StateObject var presenter: GetListPresenter<
     String,
     GameModel,
     Interactor<

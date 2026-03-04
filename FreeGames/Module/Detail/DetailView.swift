@@ -11,7 +11,7 @@ import Game
 import Core
 
 struct DetailView: View {
-  @ObservedObject var presenter: GamePresenter<
+  @StateObject var presenter: GamePresenter<
     Interactor<
       String,
       GameModel,

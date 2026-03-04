@@ -10,7 +10,7 @@ import Game
 import Core
 
 struct FavoriteView: View {
-  @ObservedObject var presenter: GetListPresenter<
+  @StateObject var presenter: GetListPresenter<
     String,
     GameModel,
     Interactor<
